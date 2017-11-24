@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 enum Dir
 {
@@ -120,7 +119,17 @@ int main()
 
     MovePacman();
     printf("(%d,%d)\n", Player.Loc.Y, Player.Loc.X);
-    printf("%d", CurrentScore);
+    printf("%d\n", CurrentScore);
+    printf(IsWon()? "Yes":"No");
+}
+
+int IsWon()
+{
+    for(int i=0; i<MapSize.Y;i++)
+        for(int j=0; j<MapSize.X;j++)
+            if(Table[i][j]=='*' || Table[i][j]=='O')
+                return 0;
+    return 1;
 }
 
 void MovePacman()
@@ -157,15 +166,19 @@ void MovePacman()
                 Ghosts[i].Loc = Ghosts[i].BaseLoc;
             } else
                 isDead = 1;
+
+    Table[Player.Loc.Y][Player.Loc.X] = '_';
     if (isDead)
     {
         Player.Loc = Player.BaseLoc;
         Player.LivesC--;
     }
 
-    GIgnored:;
+    GIgnored:
+    ;
 }
 
+//Manages out of bounds
 void MovePlayer(int x, int y)
 {
     struct Point loc = Player.Loc;
