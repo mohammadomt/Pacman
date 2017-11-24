@@ -35,8 +35,8 @@
       <file leaf-file-name="phase0.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/phase0.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="903">
-              <caret line="180" column="20" lean-forward="false" selection-start-line="180" selection-start-column="20" selection-end-line="180" selection-end-column="20" />
+            <state relative-caret-position="36">
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding>
                 <element signature="e#20#77#1" expanded="false" />
                 <element signature="e#80#118#1" expanded="false" />
@@ -44,14 +44,14 @@
                 <element signature="e#526#807#1" expanded="false" />
                 <element signature="e#820#943#1" expanded="false" />
                 <element signature="e#953#1021#1" expanded="false" />
-                <element signature="e#1178#2341#0" expanded="false" />
-                <element signature="e#2343#2523#0" expanded="false" />
-                <element signature="e#2525#3490#0" expanded="false" />
-                <element signature="e#3492#3839#0" expanded="false" />
-                <element signature="e#3841#3984#0" expanded="false" />
-                <element signature="e#3987#4088#0" expanded="false" />
-                <element signature="e#4090#4250#0" expanded="false" />
-                <element signature="e#4252#4359#0" expanded="false" />
+                <element signature="e#1261#1321#0" expanded="true" />
+                <element signature="e#1330#2563#0" expanded="false" />
+                <element signature="e#2565#2745#0" expanded="false" />
+                <element signature="e#2747#3712#0" expanded="false" />
+                <element signature="e#3714#4061#0" expanded="false" />
+                <element signature="e#4063#4206#0" expanded="false" />
+                <element signature="e#4209#4310#0" expanded="false" />
+                <marker date="1511553454635" expanded="false" signature="4518:4594" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -180,7 +180,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="22" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -204,14 +204,14 @@
             <element signature="e#526#807#1" expanded="false" />
             <element signature="e#820#943#1" expanded="false" />
             <element signature="e#953#1021#1" expanded="false" />
-            <element signature="e#1178#2341#0" expanded="false" />
-            <element signature="e#2343#2523#0" expanded="false" />
-            <element signature="e#2525#3490#0" expanded="false" />
-            <element signature="e#3492#3839#0" expanded="false" />
-            <element signature="e#3841#3984#0" expanded="false" />
-            <element signature="e#3987#4088#0" expanded="false" />
-            <element signature="e#4090#4250#0" expanded="false" />
-            <element signature="e#4252#4359#0" expanded="false" />
+            <element signature="e#1261#1321#0" expanded="true" />
+            <element signature="e#1330#2563#0" expanded="false" />
+            <element signature="e#2565#2745#0" expanded="false" />
+            <element signature="e#2747#3712#0" expanded="false" />
+            <element signature="e#3714#4061#0" expanded="false" />
+            <element signature="e#4063#4206#0" expanded="false" />
+            <element signature="e#4209#4310#0" expanded="false" />
+            <marker date="1511553454635" expanded="false" signature="4518:4594" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -234,8 +234,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/phase0.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="180" column="20" lean-forward="false" selection-start-line="180" selection-start-column="20" selection-end-line="180" selection-end-column="20" />
+        <state relative-caret-position="36">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding>
             <element signature="e#20#77#1" expanded="false" />
             <element signature="e#80#118#1" expanded="false" />
@@ -243,14 +243,14 @@
             <element signature="e#526#807#1" expanded="false" />
             <element signature="e#820#943#1" expanded="false" />
             <element signature="e#953#1021#1" expanded="false" />
-            <element signature="e#1178#2341#0" expanded="false" />
-            <element signature="e#2343#2523#0" expanded="false" />
-            <element signature="e#2525#3490#0" expanded="false" />
-            <element signature="e#3492#3839#0" expanded="false" />
-            <element signature="e#3841#3984#0" expanded="false" />
-            <element signature="e#3987#4088#0" expanded="false" />
-            <element signature="e#4090#4250#0" expanded="false" />
-            <element signature="e#4252#4359#0" expanded="false" />
+            <element signature="e#1261#1321#0" expanded="true" />
+            <element signature="e#1330#2563#0" expanded="false" />
+            <element signature="e#2565#2745#0" expanded="false" />
+            <element signature="e#2747#3712#0" expanded="false" />
+            <element signature="e#3714#4061#0" expanded="false" />
+            <element signature="e#4063#4206#0" expanded="false" />
+            <element signature="e#4209#4310#0" expanded="false" />
+            <marker date="1511553454635" expanded="false" signature="4518:4594" ph="{...}" />
           </folding>
         </state>
       </provider>

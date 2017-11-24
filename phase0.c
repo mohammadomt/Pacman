@@ -79,7 +79,18 @@ int CurrentScore = 0;
 char Table[100][100];
 struct Point MapSize;
 
-//As x stands for horizontal axis we use x for column number
+int IsWon();
+void MovePacman();
+void MovePlayer(int,int);
+void MakeGhostsPAed();
+int ComparePoint(struct Point *, struct Point *);
+
+#ifdef DEBUG
+void PrintGhost(struct Ghost);
+void PrintPac(struct Pacman);
+#endif
+
+//***As x stands for horizontal axis we use x for column number***\\
 
 int main()
 {
@@ -211,6 +222,7 @@ int ComparePoint(struct Point *p1, struct Point *p2)
     return p1->X == p2->X && p1->Y == p2->Y;
 }
 
+#ifdef DEBUG
 void PrintGhost(struct Ghost g)
 {
     printf("%d %d %d %d,%d %d,%d\n", g.Type, g.MDir, g.DeffRemained, g.BaseLoc.X, g.BaseLoc.Y, g.Loc.X,
@@ -221,3 +233,4 @@ void PrintPac(struct Pacman p)
 {
     printf("%d %d %d,%d\n", p.MDir, p.LivesC, p.BaseLoc.X, p.BaseLoc.Y);
 }
+#endif
