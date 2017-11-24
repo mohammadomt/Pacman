@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 char table[100][100];
 
@@ -54,14 +55,15 @@ int main()
     //TODO: Time and Game Score?!
     scanf("%s%d");
 
-    scanf("%d %d (%d,%d) (%d,%d)", &Player.CurrentDir, &Player.LivesC, &Player.BaseLoc.X, &Player.BaseLoc.Y,
+    printf("Salam");
+
+    scanf("pacman: %d %d (%d,%d) (%d,%d)", &Player.CurrentDir, &Player.LivesC, &Player.BaseLoc.X, &Player.BaseLoc.Y,
           &Player.Loc.X, &Player.Loc.Y);
 
     for (int i = 0; i < 4; i++)
     {
         Ghosts[i].Type = i;
-        scanf("%d %d", &Ghosts[i].CurrentDir, &Ghosts[i].Mode);
-
+        scanf("%*s%d %d", &Ghosts[i].CurrentDir, &Ghosts[i].Mode);
         if (Ghosts[i].Mode == Deff)
             scanf(" %d", &Ghosts[i].DeffRemained);
         scanf(" (%d,%d) (%d,%d)", &Ghosts[i].BaseLoc.X, &Ghosts[i].BaseLoc.Y, &(Ghosts[i].Loc.X), &Ghosts[i].Loc.Y);
