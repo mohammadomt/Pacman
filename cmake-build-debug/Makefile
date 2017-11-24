@@ -122,32 +122,32 @@ Pacman2/fast:
 	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/build
 .PHONY : Pacman2/fast
 
-main.obj: main.c.obj
+phase0.obj: phase0.c.obj
 
-.PHONY : main.obj
+.PHONY : phase0.obj
 
 # target to build an object file
-main.c.obj:
-	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/main.c.obj
-.PHONY : main.c.obj
+phase0.c.obj:
+	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/phase0.c.obj
+.PHONY : phase0.c.obj
 
-main.i: main.c.i
+phase0.i: phase0.c.i
 
-.PHONY : main.i
+.PHONY : phase0.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/main.c.i
-.PHONY : main.c.i
+phase0.c.i:
+	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/phase0.c.i
+.PHONY : phase0.c.i
 
-main.s: main.c.s
+phase0.s: phase0.c.s
 
-.PHONY : main.s
+.PHONY : phase0.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/main.c.s
-.PHONY : main.c.s
+phase0.c.s:
+	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/phase0.c.s
+.PHONY : phase0.c.s
 
 # Help Target
 help:
@@ -158,9 +158,9 @@ help:
 	@echo ... rebuild_cache
 	@echo ... Pacman2
 	@echo ... edit_cache
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... phase0.obj
+	@echo ... phase0.i
+	@echo ... phase0.s
 .PHONY : help
 
 

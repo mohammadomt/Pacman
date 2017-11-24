@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Pacman2.dir/main.c.obj"
+  "CMakeFiles/Pacman2.dir/phase0.c.obj"
   "Pacman2.pdb"
   "Pacman2.exe"
   "Pacman2.exe.manifest"

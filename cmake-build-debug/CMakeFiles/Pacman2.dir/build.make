@@ -56,38 +56,38 @@ include CMakeFiles/Pacman2.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Pacman2.dir/flags.make
 
-CMakeFiles/Pacman2.dir/main.c.obj: CMakeFiles/Pacman2.dir/flags.make
-CMakeFiles/Pacman2.dir/main.c.obj: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Programming\C\Pacman2\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Pacman2.dir/main.c.obj"
-	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Pacman2.dir\main.c.obj   -c E:\Programming\C\Pacman2\main.c
+CMakeFiles/Pacman2.dir/phase0.c.obj: CMakeFiles/Pacman2.dir/flags.make
+CMakeFiles/Pacman2.dir/phase0.c.obj: ../phase0.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Programming\C\Pacman2\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Pacman2.dir/phase0.c.obj"
+	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Pacman2.dir\phase0.c.obj   -c E:\Programming\C\Pacman2\phase0.c
 
-CMakeFiles/Pacman2.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Pacman2.dir/main.c.i"
-	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Programming\C\Pacman2\main.c > CMakeFiles\Pacman2.dir\main.c.i
+CMakeFiles/Pacman2.dir/phase0.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Pacman2.dir/phase0.c.i"
+	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Programming\C\Pacman2\phase0.c > CMakeFiles\Pacman2.dir\phase0.c.i
 
-CMakeFiles/Pacman2.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Pacman2.dir/main.c.s"
-	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Programming\C\Pacman2\main.c -o CMakeFiles\Pacman2.dir\main.c.s
+CMakeFiles/Pacman2.dir/phase0.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Pacman2.dir/phase0.c.s"
+	E:\Programming\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Programming\C\Pacman2\phase0.c -o CMakeFiles\Pacman2.dir\phase0.c.s
 
-CMakeFiles/Pacman2.dir/main.c.obj.requires:
+CMakeFiles/Pacman2.dir/phase0.c.obj.requires:
 
-.PHONY : CMakeFiles/Pacman2.dir/main.c.obj.requires
+.PHONY : CMakeFiles/Pacman2.dir/phase0.c.obj.requires
 
-CMakeFiles/Pacman2.dir/main.c.obj.provides: CMakeFiles/Pacman2.dir/main.c.obj.requires
-	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/main.c.obj.provides.build
-.PHONY : CMakeFiles/Pacman2.dir/main.c.obj.provides
+CMakeFiles/Pacman2.dir/phase0.c.obj.provides: CMakeFiles/Pacman2.dir/phase0.c.obj.requires
+	$(MAKE) -f CMakeFiles\Pacman2.dir\build.make CMakeFiles/Pacman2.dir/phase0.c.obj.provides.build
+.PHONY : CMakeFiles/Pacman2.dir/phase0.c.obj.provides
 
-CMakeFiles/Pacman2.dir/main.c.obj.provides.build: CMakeFiles/Pacman2.dir/main.c.obj
+CMakeFiles/Pacman2.dir/phase0.c.obj.provides.build: CMakeFiles/Pacman2.dir/phase0.c.obj
 
 
 # Object files for target Pacman2
 Pacman2_OBJECTS = \
-"CMakeFiles/Pacman2.dir/main.c.obj"
+"CMakeFiles/Pacman2.dir/phase0.c.obj"
 
 # External object files for target Pacman2
 Pacman2_EXTERNAL_OBJECTS =
 
-Pacman2.exe: CMakeFiles/Pacman2.dir/main.c.obj
+Pacman2.exe: CMakeFiles/Pacman2.dir/phase0.c.obj
 Pacman2.exe: CMakeFiles/Pacman2.dir/build.make
 Pacman2.exe: CMakeFiles/Pacman2.dir/linklibs.rsp
 Pacman2.exe: CMakeFiles/Pacman2.dir/objects1.rsp
@@ -100,7 +100,7 @@ CMakeFiles/Pacman2.dir/build: Pacman2.exe
 
 .PHONY : CMakeFiles/Pacman2.dir/build
 
-CMakeFiles/Pacman2.dir/requires: CMakeFiles/Pacman2.dir/main.c.obj.requires
+CMakeFiles/Pacman2.dir/requires: CMakeFiles/Pacman2.dir/phase0.c.obj.requires
 
 .PHONY : CMakeFiles/Pacman2.dir/requires
 

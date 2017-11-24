@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "E:/Programming/C/Pacman2/main.c" "E:/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman2.dir/main.c.obj"
+  "E:/Programming/C/Pacman2/phase0.c" "E:/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman2.dir/phase0.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

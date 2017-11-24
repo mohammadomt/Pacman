@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="E:/Programming/C/Pacman2/main.c">
+		<Unit filename="E:/Programming/C/Pacman2/phase0.c">
 			<Option target="Pacman2"/>
 		</Unit>
 		<Unit filename="E:/Programming/C/Pacman2/CMakeLists.txt">
