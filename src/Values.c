@@ -18,12 +18,13 @@ bool RectContains(RectD rect, double x, double y)
     return (x >= rect.left && x <= rect.right) && (y >= rect.top && y <= rect.bottom);
 }
 
+//Check intersection. Shared edges are also OK.
 bool RectIntersectsWith(RectD src, RectD dst)
 {
-    return src.top < dst.bottom &&
-           src.left < dst.right &&
-           src.bottom > dst.top &&
-           src.right > dst.left;
+    return src.top <= dst.bottom &&
+           src.left <= dst.right &&
+           src.bottom >= dst.top &&
+           src.right >= dst.left;
 }
 
 void PrintPacman(Pacman *outPacman)
@@ -36,4 +37,14 @@ void PrintGhost(Ghost *outGhost)
 {
     printf("%d %d %d %lld %lf,%lf, %d,%d\n", outGhost->type, outGhost->dir, outGhost->blue, outGhost->blueCounterDown,
            outGhost->x, outGhost->y, outGhost->startX, outGhost->startY);
+}
+
+RectD GetPacmanRect(Pacman *pacman)
+{
+    RectD retVal;
+    retVal.top =pacman->y;
+    retVal.left = pacman->x;
+    retVal.bottom = retVal.top +1;
+    retVal.right = retVal.left+1;
+    return retVal;
 }

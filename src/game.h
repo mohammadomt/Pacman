@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "map.h"
+#include "Values.h"
 
 typedef enum {
     DIR_UP = 1,
@@ -62,12 +63,13 @@ bool isGameFinished(Game* game, Pacman* pacman);
 void checkGhostState(Ghost* ghost);
 
 
-
+Point DirToPt(Direction dir);
 int GetDirSign(Direction);
 bool IsVertical(Direction);
 bool IsHorizontal(Direction);
 
 void GetPacmanCCell(Pacman *, int *, int *);
+RectD GetPacmanRect(Pacman *);
 
 void PrintPacman(Pacman *);
 void PrintGhost(Ghost *);

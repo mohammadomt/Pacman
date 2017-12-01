@@ -1,16 +1,17 @@
 #include "game.h"
 #include "map.h"
 #include <math.h>
+#include "Values.h"
 
-void MakeInBounds(int *x, int * y, Map *map)
+void MakeInBounds(int *x, int *y, Map *map)
 {
-    *x = *x%map->width;
-    *y= *y%map->height;
+    *x = *x % map->width;
+    *y = *y % map->height;
 }
 
 int GetDirSign(Direction dir)
 {
-    switch(dir)
+    switch (dir)
     {
         case DIR_DOWN:
         case DIR_RIGHT:
@@ -23,13 +24,37 @@ int GetDirSign(Direction dir)
     }
 }
 
+Point DirToPt(Direction dir)
+{
+    Point retVal;
+    retVal.x = 0;
+    retVal.y = 0;
+    switch (dir)
+    {
+        case DIR_UP:
+            retVal.y = -1;
+            break;
+        case DIR_RIGHT:
+            retVal.x = 1;
+            break;
+        case DIR_DOWN:
+            retVal.y = 1;
+            break;
+        case DIR_LEFT:
+            retVal.x = -1;
+            break;
+    }
+    return retVal;
+}
+
 bool IsVertical(Direction dir)
-{ return dir== DIR_UP || dir == DIR_DOWN;}
+{ return dir == DIR_UP || dir == DIR_DOWN; }
+
 bool IsHorizontal(Direction dir)
-{ return dir== DIR_LEFT || dir == DIR_RIGHT;}
+{ return dir == DIR_LEFT || dir == DIR_RIGHT; }
 
 void GetPacmanCCell(Pacman *pacman, int *x, int *y)
 {
-    *x= (int)round(pacman->x);
-    *y= (int)round(pacman->y);
+    *x = (int) round(pacman->x);
+    *y = (int) round(pacman->y);
 }

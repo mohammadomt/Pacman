@@ -13,6 +13,12 @@ typedef struct
     double bottom;
 } RectD;
 
+typedef struct
+{
+    int x;
+    int y;
+} Point;
+
 int Sign(double);
 
 double Abs(double);

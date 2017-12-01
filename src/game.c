@@ -56,12 +56,12 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 
     fclose(fs);
 
-    for (int i = 0; i < outMap->height; i++)
-    {
-        for (int j = 0; j < outMap->width; j++)
-            printf("%c", outMap->cells[i][j]);
-        printf("\n");
-    }
+//    for (int i = 0; i < outMap->height; i++)
+//    {
+//        for (int j = 0; j < outMap->width; j++)
+//            printf("%c", outMap->cells[i][j]);
+//        printf("\n");
+//    }
 //    PrintPacman(outPacman);
 //    for (int i = 0; i < MAX_GHOST_COUNT; i++)
 //    {
