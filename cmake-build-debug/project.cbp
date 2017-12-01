@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="project"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="E:/Programming/C/Pacman2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="project">
+				<Option output="E:/Programming/C/Pacman2/cmake-build-debug/project.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Programming/C/Pacman2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="E:/Programming/C/Pacman2/src"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 project"/>
+					<CompileFile command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="project/fast">
+				<Option output="E:/Programming/C/Pacman2/cmake-build-debug/project.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Programming/C/Pacman2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="E:/Programming/C/Pacman2/src"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+					<Add directory="e:\programming\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 project/fast"/>
+					<CompileFile command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="E:/Programming/C/Pacman2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="E:/Programming/C/Pacman2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/Programming/MinGW/bin/mingw32-make.exe -f &quot;E:/Programming/C/Pacman2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="E:/Programming/C/Pacman2/src/game.c">
+			<Option target="project"/>
+		</Unit>
+		<Unit filename="E:/Programming/C/Pacman2/src/game.h">
+			<Option target="project"/>
+		</Unit>
+		<Unit filename="E:/Programming/C/Pacman2/src/physics.c">
+			<Option target="project"/>
+		</Unit>
+		<Unit filename="E:/Programming/C/Pacman2/src/physics.h">
+			<Option target="project"/>
+		</Unit>
+		<Unit filename="E:/Programming/C/Pacman2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

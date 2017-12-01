@@ -1,3 +1,0 @@
-C:\Users\ASUS\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\172.4343.16\bin\cmake\bin\cmake.exe -E remove -f CMakeFiles\Pacman2.dir/objects.a
-E:\Programming\MinGW\bin\ar.exe cr CMakeFiles\Pacman2.dir/objects.a @CMakeFiles\Pacman2.dir\objects1.rsp
-E:\Programming\MinGW\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\Pacman2.dir/objects.a -Wl,--no-whole-archive  -o Pacman2.exe -Wl,--out-implib,libPacman2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Pacman2.dir\linklibs.rsp
