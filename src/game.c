@@ -24,7 +24,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
             fscanf(fs, "%c", &c);
             if (c != '\n' && c != '\r')
             {
-                outMap->cells[j][i] = c;
+                outMap->cells[j][i] = (Cell)c;
                 switch (outMap->cells[i][j])
                 {
                     case CELL_CHEESE:
@@ -132,7 +132,8 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
 
 bool isGameFinished(Game *game, Pacman *pacman)
 {
-    return false;
+    if(pacman->health==0) fprintf(stderr,"Pacman dead!\n");
+    if(game->pineapples == 0 && game->cheeses == 0) fprintf(stderr,"Everything is eaten!\n");
     return (game->pineapples == 0 && game->cheeses == 0) || pacman->health == 0;
 }
 
