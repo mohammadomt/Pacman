@@ -3,10 +3,16 @@
 #include <math.h>
 #include "Values.h"
 
-void MakeInBounds(int *x, int *y, Map *map)
+void MakeInBounds(int *x, int *y, const Map *map)
 {
-    *x = *x % map->width;
-    *y = *y % map->height;
+    if (*x < 0)
+        *x += map->width;
+    else
+        *x = *x % map->width;
+    if (*y < 0)
+        *y += map->height;
+    else
+        *y = *y % map->height;
 }
 
 int GetDirSign(Direction dir)

@@ -4,8 +4,8 @@
 #include "game.h"
 #include "input.h"
 
-#define PACMAN_DEFAULT_SPEED 2.
-#define GHOST_DEFAULT_SPEED 2.
+#define PACMAN_DEFAULT_SPEED 4.
+#define GHOST_DEFAULT_SPEED 4.
 
 // TO WRITE
 Direction decidePacman(const Map* map, Pacman* pacman, Action action);

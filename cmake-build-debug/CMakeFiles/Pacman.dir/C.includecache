@@ -25,6 +25,8 @@ game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
 map.h
 /cygdrive/e/Programming/C/Pacman2/src/map.h
+physics.h
+/cygdrive/e/Programming/C/Pacman2/src/physics.h
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 
@@ -59,11 +61,13 @@ map.h
 /cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
-values.h
-/cygdrive/e/Programming/C/Pacman2/src/values.h
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 math.h
+-
+stdio.h
+-
+stdlib.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/physics.h
@@ -71,6 +75,4 @@ game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
 input.h
 /cygdrive/e/Programming/C/Pacman2/src/input.h
-
-/cygdrive/e/Programming/C/Pacman2/src/values.h
 

@@ -19,5 +19,5 @@ typedef struct {
     Cell cells[MAP_MAX_SIZE][MAP_MAX_SIZE];
 } Map;
 
-void MakeInBounds(int *, int *, Map *);
+void MakeInBounds(int *, int *, const Map *);
 #endif

@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "map.h"
+#include "physics.h"
 #include "Values.h"
 
 
@@ -10,6 +11,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     outGame->cheeses = 0;
     outGame->cherries = 0;
     outGame->pineapples = 0;
+    outGame->ghosts = MAX_GHOST_COUNT;
     outGame->score = 0;
 
     FILE *fs = fopen(filename, "r");
@@ -20,7 +22,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
         {
             char c;
             fscanf(fs, "%c", &c);
-            if (c != '\n' && c!='\r')
+            if (c != '\n' && c != '\r')
             {
                 outMap->cells[j][i] = c;
                 switch (outMap->cells[i][j])
@@ -42,10 +44,11 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     fscanf(fs, "%d", &outGame->score);
     fscanf(fs, "%*s %d %d (%d,%d) (%lf,%lf)", &outPacman->dir, &outPacman->health, &outPacman->startX,
            &outPacman->startY, &outPacman->x, &outPacman->y);
-
+    outPacman->speed = PACMAN_DEFAULT_SPEED;
     for (int i = 0; i < MAX_GHOST_COUNT; i++)
     {
-        outGhosts[i].type = i;
+        outGhosts[i].type = (GhostType)i;
+        outGhosts[i].speed = GHOST_DEFAULT_SPEED;
         int mode;
         fscanf(fs, "%*s%d %d", &outGhosts[i].dir, &mode);
         if (mode == 0)
@@ -59,8 +62,8 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 //    for (int i = 0; i < outMap->height; i++)
 //    {
 //        for (int j = 0; j < outMap->width; j++)
-//            printf("%c", outMap->cells[i][j]);
-//        printf("\n");
+//            fprintf(stderr, "%c", outMap->cells[i][j]);
+//        fprintf(stderr,"\n");
 //    }
 //    PrintPacman(outPacman);
 //    for (int i = 0; i < MAX_GHOST_COUNT; i++)
@@ -89,8 +92,8 @@ void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
             outGame->pineapples--;
             for (int i = 0; i < MAX_GHOST_COUNT; i++)
             {
-                outGhosts->blue = true;
-                outGhosts->blueCounterDown = BLUE_DURATION;
+                (outGhosts+i)->blue = true;
+                (outGhosts+i)->blueCounterDown = BLUE_DURATION;
             }
             break;
     }
@@ -129,11 +132,13 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
 
 bool isGameFinished(Game *game, Pacman *pacman)
 {
+    return false;
     return (game->pineapples == 0 && game->cheeses == 0) || pacman->health == 0;
 }
 
 void checkGhostState(Ghost *ghost)
 {
+//    PrintGhost(ghost);
     if (!ghost->blue)
         return;
     if (ghost->blueCounterDown <= 0)
