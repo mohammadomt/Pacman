@@ -1,9 +1,13 @@
+#define TAHVIL
+
 #ifndef __GAME_H
 #define __GAME_H
 
 #include <stdbool.h>
 #include "map.h"
+#ifndef TAHVIL
 #include "Values.h"
+#endif
 
 typedef enum {
     DIR_UP = 1,
@@ -62,7 +66,7 @@ bool isGameFinished(Game* game, Pacman* pacman);
 // TO WRITE
 void checkGhostState(Ghost* ghost);
 
-
+#ifndef TAHVIL
 Point DirToPt(Direction dir);
 int GetDirSign(Direction);
 bool IsVertical(Direction);
@@ -73,4 +77,6 @@ RectD GetPacmanRect(Pacman *);
 
 void PrintPacman(Pacman *);
 void PrintGhost(Ghost *);
+#endif
+
 #endif

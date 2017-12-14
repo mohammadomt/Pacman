@@ -1,10 +1,140 @@
+#define TAHVIL
+
 #include <stdio.h>
 
 #include "game.h"
 #include "map.h"
 #include "physics.h"
+#include <math.h>
+#ifndef TAHVIL
 #include "Values.h"
+#endif
 
+#ifdef TAHVIL
+typedef struct
+{
+    double top;
+    double left;
+    double right;
+    double bottom;
+} RectD;
+
+typedef struct
+{
+    int x;
+    int y;
+} Point;
+
+void MakeInBounds(int *x, int *y, const Map *map)
+{
+    if (*x < 0)
+        *x += map->width;
+    else
+        *x = *x % map->width;
+    if (*y < 0)
+        *y += map->height;
+    else
+        *y = *y % map->height;
+}
+
+int GetDirSign(Direction dir)
+{
+    switch (dir)
+    {
+        case DIR_DOWN:
+        case DIR_RIGHT:
+            return 1;
+        case DIR_UP:
+        case DIR_LEFT:
+            return -1;
+        default:
+            return 0;
+    }
+}
+
+Point DirToPt(Direction dir)
+{
+    Point retVal;
+    retVal.x = 0;
+    retVal.y = 0;
+    switch (dir)
+    {
+        case DIR_UP:
+            retVal.y = -1;
+            break;
+        case DIR_RIGHT:
+            retVal.x = 1;
+            break;
+        case DIR_DOWN:
+            retVal.y = 1;
+            break;
+        case DIR_LEFT:
+            retVal.x = -1;
+            break;
+    }
+    return retVal;
+}
+
+bool IsVertical(Direction dir)
+{ return dir == DIR_UP || dir == DIR_DOWN; }
+
+bool IsHorizontal(Direction dir)
+{ return dir == DIR_LEFT || dir == DIR_RIGHT; }
+
+void GetPacmanCCell(Pacman *pacman, int *x, int *y)
+{
+    *x = (int) round(pacman->x);
+    *y = (int) round(pacman->y);
+}
+
+
+///////////Values
+int Sign(double number)
+{
+    return number >= 0 ? 1 : -1;
+}
+
+double Abs(double number)
+{
+    return number >= 0 ? number : -number;
+}
+
+bool RectContains(RectD rect, double x, double y)
+{
+    return (x >= rect.left && x <= rect.right) && (y >= rect.top && y <= rect.bottom);
+}
+
+//Check intersection. Shared edges are also OK.
+bool RectIntersectsWith(RectD src, RectD dst)
+{
+    return src.top < dst.bottom &&
+           src.left < dst.right &&
+           src.bottom > dst.top &&
+           src.right > dst.left;
+}
+
+void PrintPacman(Pacman *outPacman)
+{
+    fprintf(stderr, "%d %d (%d,%d) (%lf,%lf)\n", outPacman->dir, outPacman->health, outPacman->startX,
+            outPacman->startY, outPacman->x, outPacman->y);
+}
+
+void PrintGhost(Ghost *outGhost)
+{
+    fprintf(stderr, "%d %d %d %lld %lf,%lf, %d,%d\n", outGhost->type, outGhost->dir, outGhost->blue, outGhost->blueCounterDown,
+            outGhost->x, outGhost->y, outGhost->startX, outGhost->startY);
+}
+
+RectD GetPacmanRect(Pacman *pacman)
+{
+    RectD retVal;
+    retVal.top =pacman->y;
+    retVal.left = pacman->x;
+    retVal.bottom = retVal.top +1;
+    retVal.right = retVal.left+1;
+    return retVal;
+}
+#endif
 
 void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
 {
@@ -58,18 +188,6 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     }
 
     fclose(fs);
-
-//    for (int i = 0; i < outMap->height; i++)
-//    {
-//        for (int j = 0; j < outMap->width; j++)
-//            fprintf(stderr, "%c", outMap->cells[i][j]);
-//        fprintf(stderr,"\n");
-//    }
-//    PrintPacman(outPacman);
-//    for (int i = 0; i < MAX_GHOST_COUNT; i++)
-//    {
-//        PrintGhost(outGhosts+i);
-//    }
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
@@ -139,7 +257,6 @@ bool isGameFinished(Game *game, Pacman *pacman)
 
 void checkGhostState(Ghost *ghost)
 {
-//    PrintGhost(ghost);
     if (!ghost->blue)
         return;
     if (ghost->blueCounterDown <= 0)

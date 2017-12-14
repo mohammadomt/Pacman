@@ -1,8 +1,11 @@
+#define TAHVIL
+
 #include "game.h"
 #include "map.h"
 #include <math.h>
 #include "Values.h"
 
+#ifndef TAHVIL
 void MakeInBounds(int *x, int *y, const Map *map)
 {
     if (*x < 0)
@@ -64,3 +67,5 @@ void GetPacmanCCell(Pacman *pacman, int *x, int *y)
     *x = (int) round(pacman->x);
     *y = (int) round(pacman->y);
 }
+
+#endif

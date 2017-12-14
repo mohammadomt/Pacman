@@ -2,6 +2,7 @@
 // Created by Mohammad on 11/30/2017.
 //
 
+#ifndef TAHVIL
 #ifndef PACMAN_VALUES_H
 #define PACMAN_VALUES_H
 
@@ -28,3 +29,4 @@ bool RectIntersectsWith(RectD,RectD);
 
 
 #endif //PACMAN_VALUES_H
+#endif

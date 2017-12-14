@@ -1,3 +1,5 @@
+#define TAHVIL
+
 #include "physics.h"
 #include "map.h"
 #include "game.h"
@@ -8,7 +10,9 @@
 
 Direction decideGhost(const Map *map, Ghost *ghost)
 {
+#if DEBUG
     PrintGhost(ghost);
+#endif
     fprintf(stderr, "%lf,%lf\n", ghost->x, ghost->y);
     bool availableDirs[4] = {false};
     for (int i = 0; i < 4; i++)

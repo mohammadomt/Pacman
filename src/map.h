@@ -1,3 +1,5 @@
+#define TAHVIL
+
 #include "game.h"
 
 #ifndef __MAP_H
@@ -19,5 +21,8 @@ typedef struct {
     Cell cells[MAP_MAX_SIZE][MAP_MAX_SIZE];
 } Map;
 
+#ifndef TAHVIL
 void MakeInBounds(int *, int *, const Map *);
+#endif
+
 #endif
