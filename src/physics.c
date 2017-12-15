@@ -8,6 +8,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef TAHVIL
+void MakeInBounds(int *, int *, const Map *);
+
+typedef struct
+{
+    int x;
+    int y;
+} Point;
+
+Point DirToPt(Direction dir)
+{
+    Point retVal;
+    retVal.x = 0;
+    retVal.y = 0;
+    switch (dir)
+    {
+        case DIR_UP:
+            retVal.y = -1;
+            break;
+        case DIR_RIGHT:
+            retVal.x = 1;
+            break;
+        case DIR_DOWN:
+            retVal.y = 1;
+            break;
+        case DIR_LEFT:
+            retVal.x = -1;
+            break;
+    }
+    return retVal;
+}
+
+#endif
+
 Direction decideGhost(const Map *map, Ghost *ghost)
 {
 #if DEBUG
@@ -32,6 +66,7 @@ Direction decideGhost(const Map *map, Ghost *ghost)
         return (Direction)(i%4 + 1);
     }
 
+#ifndef TAHVIL
     //Check if it is time for decision
 
     //We need pacman info to decide
@@ -68,6 +103,7 @@ Direction decideGhost(const Map *map, Ghost *ghost)
 //    ghost->x += (double)pt.x/(double)CYCLES_PER_SEC;
 //    ghost->y+=(double)pt.y/(double)CYCLES_PER_SEC;
     return DIR_NONE;
+#endif
 }
 
 Direction decidePacman(const Map *map, Pacman *pacman, Action action)

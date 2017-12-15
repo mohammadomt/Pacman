@@ -19,12 +19,6 @@ typedef struct
     double bottom;
 } RectD;
 
-typedef struct
-{
-    int x;
-    int y;
-} Point;
-
 void MakeInBounds(int *x, int *y, const Map *map)
 {
     if (*x < 0)
@@ -50,29 +44,6 @@ int GetDirSign(Direction dir)
         default:
             return 0;
     }
-}
-
-Point DirToPt(Direction dir)
-{
-    Point retVal;
-    retVal.x = 0;
-    retVal.y = 0;
-    switch (dir)
-    {
-        case DIR_UP:
-            retVal.y = -1;
-            break;
-        case DIR_RIGHT:
-            retVal.x = 1;
-            break;
-        case DIR_DOWN:
-            retVal.y = 1;
-            break;
-        case DIR_LEFT:
-            retVal.x = -1;
-            break;
-    }
-    return retVal;
 }
 
 bool IsVertical(Direction dir)
