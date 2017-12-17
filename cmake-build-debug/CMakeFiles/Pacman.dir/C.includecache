@@ -29,6 +29,10 @@ physics.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.h
 math.h
 -
+stdlib.h
+-
+time.h
+-
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 
@@ -59,17 +63,15 @@ game.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.c
 physics.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.h
-map.h
-/cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
-math.h
+map.h
+/cygdrive/e/Programming/C/Pacman2/src/map.h
+stdlib.h
 -
 stdio.h
 -
-stdlib.h
+time.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/physics.h

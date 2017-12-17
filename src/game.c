@@ -6,6 +6,9 @@
 #include "map.h"
 #include "physics.h"
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
+
 #ifndef TAHVIL
 #include "Values.h"
 #endif
@@ -126,7 +129,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
             if (c != '\n' && c != '\r')
             {
                 outMap->cells[j][i] = (Cell)c;
-                switch (outMap->cells[i][j])
+                switch (outMap->cells[j][i])
                 {
                     case CELL_CHEESE:
                         outGame->cheeses++;
@@ -159,6 +162,8 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     }
 
     fclose(fs);
+
+    srand(time(NULL));
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
