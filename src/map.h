@@ -1,9 +1,9 @@
 #undef TAHVIL
 
-#include "game.h"
-
 #ifndef __MAP_H
 #define __MAP_H
+
+#include "game.h"
 
 typedef enum
 {
@@ -25,16 +25,9 @@ typedef struct
 
 #ifndef TAHVIL
 
-void MakeInBounds(int *, int *, const Map *);
+void MakeInBounds(const Map *, int *, int *);
 
-typedef struct
-{
-    Point pre;
-    Point current;
-} LinkedPoint;
-
-
-LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY);
+Point GetNearestNB(const Map *map, int x, int y);
 
 #endif
 

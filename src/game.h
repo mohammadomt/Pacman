@@ -98,6 +98,19 @@ void PrintPacman(Pacman *);
 
 void PrintGhost(Ghost *);
 
+typedef struct
+{
+    Point pre;
+    Point current;
+    Direction dir;
+} LinkedPoint;
+
+//int FreeBlocksCount = 0;
+//LinkedPoint *FoundPaths;
+//int FoundPathsCount = 0;
+LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY);
+Direction GetMoveDirTo(const Map *map, Point from, Point to);
+
 #endif
 
 #endif

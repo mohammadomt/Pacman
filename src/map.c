@@ -8,9 +8,7 @@
 
 #ifndef TAHVIL
 
-extern int FreeBlocks = 0;
-
-void MakeInBounds(int *x, int *y, const Map *map)
+void MakeInBounds(const Map *map, int *x, int *y)
 {
     if (*x < 0)
         *x += map->width;
@@ -107,7 +105,7 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
             Point ptNext = DirToPt((Direction) dir);
             ptNext.x += current.x;
             ptNext.y += current.y;
-            MakeInBounds(&ptNext.x, &ptNext.y, map);
+            MakeInBounds(map, &ptNext.x, &ptNext.y);
 
             if (visited[ptNext.x][ptNext.y])
                 continue;
@@ -122,6 +120,57 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
                     return queue + pointer - 1;
             }
         }
+    }
+}
+
+Direction GetMoveDirTo(const Map *map, Point from, Point to)
+{
+//    for (int i = 0; i < FoundPathsCount; i++)
+//        if (PtIsEqual(&FoundPaths[i].pre, &from) && PtIsEqual(&FoundPaths[i].current, &to))
+//            return FoundPaths[i].dir;
+    if (PtIsEqual(&from, &to))
+        return DIR_NONE;
+
+    LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
+    Point search;
+    search.x = to.x;
+    search.y = to.y;
+    Direction res;
+    while (true)
+    {
+        if (PtIsEqual(&queue->current, &search))
+            if (PtIsEqual(&queue->pre, &from))
+            {
+                Point ptDir = search;
+                ptDir.x -= from.x;
+                ptDir.y -= from.y;
+                res = PtToDir(ptDir);
+                break;
+            } else
+                search = queue->pre;
+        queue--;
+    }
+
+//    free(queue);
+    return res;
+}
+
+Point GetNearestNB(const Map *map, int x, int y)
+{
+    int radius = 0;
+    while (true)
+    {
+        radius++;
+        for (int i = -radius; i <= radius; i++)
+            for (int j = -radius; j <= radius; j++)
+                if (x + i >= 0 && x + i < map->width && y + j >= 0 && y + j < map->height)
+                    if (map->cells[x + i][y + j] != CELL_BLOCK)
+                    {
+                        Point retVal;
+                        retVal.x = x + i;
+                        retVal.y = y + j;
+                        return retVal;
+                    }
     }
 }
 

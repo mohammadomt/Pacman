@@ -124,6 +124,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     FILE *fs = fopen(filename, "r");
     int n, m;
     fscanf(fs, "%d%d", &outMap->height, &outMap->width);
+    int blocksCount = 0;
     for (int i = 0; i < outMap->height; i++)
         for (int j = 0; j < outMap->width;)
         {
@@ -142,6 +143,9 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
                         break;
                     case CELL_PINEAPPLE:
                         outGame->pineapples++;
+                        break;
+                    case CELL_BLOCK:
+                        blocksCount++;
                         break;
                 }
                 j++;
@@ -168,6 +172,8 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 
     srand(time(NULL));
 
+//    FreeBlocksCount = outMap->height * outMap->width - blocksCount;
+//    FoundPaths = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)

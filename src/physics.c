@@ -42,94 +42,70 @@ Point DirToPt(Direction dir)
 
 #endif
 
-Direction decideGhost(const Map *map , Ghost *ghost , Pacman *pacman , Ghost *blinky)
+Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blinky)
 {
-    LinkedPoint *queue = FindPath(map, (int) ghost->x, (int) ghost->y, 1, 1);
-    Point current;
-    current.x = (int) ghost->x;
-    current.y = (int) ghost->y;
-    Point search;
-    search.x = 1;
-    search.y = 1;
-    while (true)
-    {
-        if (PtIsEqual(&queue->current, &search))
-            if (PtIsEqual(&queue->pre, &current))
-            {
-                Point ptDir = search;
-                ptDir.x -= current.x;
-                //ptDir.x = -ptDir.x;
-                ptDir.y -= current.y;
-                //ptDir.y = -ptDir.y;
-//                free(queue);
-                fprintf(stderr, "\n%d%d %d, %d %d, %d", ptDir.x,ptDir.y, search.x, search.y, current.x, current.y);
-                return PtToDir(ptDir);
-            } else
-                search = queue->pre;
-        queue--;
-    }
+    Point from, to;
+    from.x = (int) ghost->x;
+    from.y = (int) ghost->y;
 
-
-#if DEBUG
-    PrintGhost(ghost);
-#endif
-    fprintf(stderr, "%lf,%lf\n", ghost->x, ghost->y);
-    bool availableDirs[4] = {false};
-    for (int i = 0; i < 4; i++)
-    {
-        Point dirPt = DirToPt(i + 1);
-        int nextX = (int) ghost->x + dirPt.x;
-        int nextY = (int) ghost->y + dirPt.y;
-        MakeInBounds(&nextX, &nextY, map);
-        availableDirs[i] = map->cells[nextX][nextY] != CELL_BLOCK;
-        fprintf(stderr, "%d", availableDirs[i]);
-    }
-
-    {
-        int i = rand() % 4;
-        while (!availableDirs[(++i) % 4]);
-        fprintf(stderr, "\n%d\n", i);
-        return (Direction) (i % 4 + 1);
-    }
-
-#ifndef TAHVIL
-    //Check if it is time for decision
-
-    //We need pacman info to decide
-    Pacman pm;
-
-    Direction best = ghost->dir;
     switch (ghost->type)
     {
         case BLINKY:
-            for (int i = 0; i < 4; i++)
-            {
-                if (!availableDirs[i])
-                    continue;
-
-                if ((IsVertical(i) && GetDirSign(i) == Sign(pm.y - ghost->y)) ||
-                    IsHorizontal(i) && GetDirSign(i) == Sign(pm.x - ghost->x))
-                    best = (IsVertical(i) * Abs(pm.y - ghost->y) < IsHorizontal(best) * Abs(pm.x - ghost->x)) ||
-                           (IsVertical(best) * Abs(pm.y - ghost->y) > IsHorizontal(i) * Abs(pm.x - ghost->x)) ? i
-                                                                                                              : best;
-
-            }
+            to.x = (int) pacman->x;
+            to.y = (int) pacman->y;
             break;
         case PINKY:
-
+        {
+            //TODO: Get a log to check it
+            int i;
+            Point ptDir = DirToPt(pacman->dir);
+            int x, y;
+            for (i = 0; i <= 4; i++)
+            {
+                x = (int) pacman->x + ptDir.x * i;
+                y = (int) pacman->y + ptDir.y * i;
+                MakeInBounds(map, &x, &y);
+                if (map->cells[x][y] == CELL_BLOCK)
+                    break;
+            }
+            i--;
+            x = (int) pacman->x + ptDir.x * i;
+            y = (int) pacman->y + ptDir.y * i;
+            MakeInBounds(map, &x, &y);
+            to.x = x;
+            to.y = y;
+        }
+            break;
+        case INKY:
+        {
+            int x  = (int)(2 * pacman->x - blinky->x), y = (int)(2 * pacman->y  - blinky->y);
+            MakeInBounds(map, &x, &y);
+            Point toGo = GetNearestNB(map, x, y);
+            to.x = toGo.x;
+            to.y = toGo.y;
+        }
             break;
         case CLYDE:
 
-            break;
-        case INKY:
+            if (Abs(ghost->x - pacman->x) + Abs(ghost->y - pacman->y) > 8)
+            {
+                to.x = (int) pacman->x;
+                to.y = (int) pacman->y;
+                break;
+            }
 
+            Point lb  = GetNearestNB(map, 0, map->height - 1);
+            to.x = lb.x;
+            to.y = lb.y;
+            break;
+        default:
+            to.x = 1;
+            to.y = 1;
             break;
     }
-//    Point  pt  =DirToPt(DIR_UP);
-//    ghost->x += (double)pt.x/(double)CYCLES_PER_SEC;
-//    ghost->y+=(double)pt.y/(double)CYCLES_PER_SEC;
-    return DIR_NONE;
-#endif
+    fprintf(stderr,"from: %d, %d to: %d, %d\n", from.x, from.y, to.x, to.y);
+    return GetMoveDirTo(map, from, to);
+
 }
 
 Direction decidePacman(const Map *map, Pacman *pacman, Action action)
@@ -162,7 +138,7 @@ Direction decidePacman(const Map *map, Pacman *pacman, Action action)
     dirPt = DirToPt(dirAction);
     nextX = (int) pacman->x + dirPt.x;
     nextY = (int) pacman->y + dirPt.y;
-    MakeInBounds(&nextX, &nextY, map);
+    MakeInBounds(map, &nextX, &nextY);
 
     retVal = dirAction;
 
