@@ -3,6 +3,9 @@
 //
 
 #ifndef TAHVIL
+
+#include <stdbool.h>
+
 #ifndef PACMAN_VALUES_H
 #define PACMAN_VALUES_H
 
@@ -25,8 +28,10 @@ int Sign(double);
 double Abs(double);
 
 bool RectContains(RectD, double, double);
-bool RectIntersectsWith(RectD,RectD);
 
+bool RectIntersectsWith(RectD, RectD);
+
+bool PtIsEqual(Point *p1, Point *p2);
 
 #endif //PACMAN_VALUES_H
 #endif

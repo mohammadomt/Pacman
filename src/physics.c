@@ -1,4 +1,4 @@
-#define TAHVIL
+#undef TAHVIL
 
 #include "physics.h"
 #include "map.h"
@@ -42,8 +42,34 @@ Point DirToPt(Direction dir)
 
 #endif
 
-Direction decideGhost(const Map *map, Ghost *ghost)
+Direction decideGhost(const Map *map , Ghost *ghost , Pacman *pacman , Ghost *blinky)
 {
+    LinkedPoint *queue = FindPath(map, (int) ghost->x, (int) ghost->y, 1, 1);
+    Point current;
+    current.x = (int) ghost->x;
+    current.y = (int) ghost->y;
+    Point search;
+    search.x = 1;
+    search.y = 1;
+    while (true)
+    {
+        if (PtIsEqual(&queue->current, &search))
+            if (PtIsEqual(&queue->pre, &current))
+            {
+                Point ptDir = search;
+                ptDir.x -= current.x;
+                //ptDir.x = -ptDir.x;
+                ptDir.y -= current.y;
+                //ptDir.y = -ptDir.y;
+//                free(queue);
+                fprintf(stderr, "\n%d%d %d, %d %d, %d", ptDir.x,ptDir.y, search.x, search.y, current.x, current.y);
+                return PtToDir(ptDir);
+            } else
+                search = queue->pre;
+        queue--;
+    }
+
+
 #if DEBUG
     PrintGhost(ghost);
 #endif
@@ -61,9 +87,9 @@ Direction decideGhost(const Map *map, Ghost *ghost)
 
     {
         int i = rand() % 4;
-        while (!availableDirs[(++i)%4]);
+        while (!availableDirs[(++i) % 4]);
         fprintf(stderr, "\n%d\n", i);
-        return (Direction)(i%4 + 1);
+        return (Direction) (i % 4 + 1);
     }
 
 #ifndef TAHVIL

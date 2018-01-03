@@ -1,4 +1,4 @@
-#define TAHVIL
+#undef TAHVIL
 
 #include <stdio.h>
 
@@ -10,7 +10,10 @@
 #include <time.h>
 
 #ifndef TAHVIL
+
 #include "Values.h"
+#include "map.h"
+
 #endif
 
 #ifdef TAHVIL
@@ -128,7 +131,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
             fscanf(fs, "%c", &c);
             if (c != '\n' && c != '\r')
             {
-                outMap->cells[j][i] = (Cell)c;
+                outMap->cells[j][i] = (Cell) c;
                 switch (outMap->cells[j][i])
                 {
                     case CELL_CHEESE:
@@ -151,7 +154,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     outPacman->speed = PACMAN_DEFAULT_SPEED;
     for (int i = 0; i < MAX_GHOST_COUNT; i++)
     {
-        outGhosts[i].type = (GhostType)i;
+        outGhosts[i].type = (GhostType) i;
         outGhosts[i].speed = GHOST_DEFAULT_SPEED;
         int mode;
         fscanf(fs, "%*s%d %d", &outGhosts[i].dir, &mode);
@@ -164,6 +167,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     fclose(fs);
 
     srand(time(NULL));
+
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
@@ -186,8 +190,8 @@ void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
             outGame->pineapples--;
             for (int i = 0; i < MAX_GHOST_COUNT; i++)
             {
-                (outGhosts+i)->blue = true;
-                (outGhosts+i)->blueCounterDown = BLUE_DURATION;
+                (outGhosts + i)->blue = true;
+                (outGhosts + i)->blueCounterDown = BLUE_DURATION;
             }
             break;
     }
@@ -226,8 +230,8 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
 
 bool isGameFinished(Game *game, Pacman *pacman)
 {
-    if(pacman->health==0) fprintf(stderr,"Pacman dead!\n");
-    if(game->pineapples == 0 && game->cheeses == 0) fprintf(stderr,"Everything is eaten!\n");
+    if (pacman->health == 0) fprintf(stderr, "Pacman dead!\n");
+    if (game->pineapples == 0 && game->cheeses == 0) fprintf(stderr, "Everything is eaten!\n");
     return (game->pineapples == 0 && game->cheeses == 0) || pacman->health == 0;
 }
 

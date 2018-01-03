@@ -1,4 +1,4 @@
-#define TAHVIL
+#undef TAHVIL
 
 #ifndef TAHVIL
 #include <stdbool.h>
@@ -50,6 +50,11 @@ RectD GetPacmanRect(Pacman *pacman)
     retVal.bottom = retVal.top +1;
     retVal.right = retVal.left+1;
     return retVal;
+}
+
+bool PtIsEqual(Point *p1, Point *p2)
+{
+    return p1->x == p2->x && p1->y == p2->y;
 }
 
 #endif

@@ -1,13 +1,16 @@
-#define TAHVIL
+#undef TAHVIL
 
 #ifndef __GAME_H
 #define __GAME_H
 
+#ifndef TAHVIL
+
+#include "Values.h"
+
+#endif
+
 #include <stdbool.h>
 #include "map.h"
-#ifndef TAHVIL
-#include "Values.h"
-#endif
 
 typedef enum {
     DIR_UP = 1,
@@ -19,7 +22,7 @@ typedef enum {
 typedef enum { BLINKY, PINKY, CLYDE, INKY } GhostType;
 
 #define MAX_GHOST_COUNT 4
-
+#define MINUMAL_DISTANCE 1
 #define CHEESE_SCORE 10
 #define CHERRY_SCORE 100
 #define PINEAPPLE_SCORE 20
@@ -40,43 +43,61 @@ typedef struct {
 
 #define CYCLES_PER_SEC 60
 #define BLUE_DURATION 5*CYCLES_PER_SEC
+typedef enum
+{
+    CHASE = 1,
+    SCATTER = 2
+} GhostState;
 
-typedef struct {
+typedef struct
+{
     double x, y;
     int startX, startY;
     Direction dir;
     GhostType type;
     bool blue;
+    GhostState state;
     unsigned long long blueCounterDown;
+    unsigned long long stateCounterDown;
     double speed;
 } Ghost;
 
-// TO WRITE
-void initiateGame(char* filename, Map* outMap, Game* outGame, Pacman* outPacman, Ghost* outGhosts);
 
 // TO WRITE
-void checkEatables(Map* map, Game* outGame, Pacman* outPacman, Ghost* outGhosts);
+void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman, Ghost *outGhosts);
 
 // TO WRITE
-void checkGhostCollision(Pacman* outPacman, Ghost* outGhost);
+void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts);
 
 // TO WRITE
-bool isGameFinished(Game* game, Pacman* pacman);
+void checkGhostCollision(Pacman *outPacman, Ghost *outGhost);
 
 // TO WRITE
-void checkGhostState(Ghost* ghost);
+bool isGameFinished(Game *game, Pacman *pacman);
+
+// TO WRITE
+void checkGhostState(Ghost *ghost);
 
 #ifndef TAHVIL
+
 Point DirToPt(Direction dir);
+
+Direction PtToDir(Point pt);
+
 int GetDirSign(Direction);
+
 bool IsVertical(Direction);
+
 bool IsHorizontal(Direction);
 
 void GetPacmanCCell(Pacman *, int *, int *);
+
 RectD GetPacmanRect(Pacman *);
 
 void PrintPacman(Pacman *);
+
 void PrintGhost(Ghost *);
+
 #endif
 
 #endif
