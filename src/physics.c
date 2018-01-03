@@ -78,7 +78,10 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             break;
         case INKY:
         {
-            int x  = (int)(2 * pacman->x - blinky->x), y = (int)(2 * pacman->y  - blinky->y);
+            Point pivot = DirToPt(pacman->dir);
+            pivot.x = (int)pacman->x + pivot.x *2 ;
+            pivot.y = (int)pacman->y + pivot.y *2 ;
+            int x  = 2 * pivot.x - (int)blinky->x, y = 2 * pivot.y  - (int)blinky->y;
             MakeInBounds(map, &x, &y);
             Point toGo = GetNearestNB(map, x, y);
             to.x = toGo.x;
@@ -98,12 +101,8 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             to.x = lb.x;
             to.y = lb.y;
             break;
-        default:
-            to.x = 1;
-            to.y = 1;
-            break;
     }
-    fprintf(stderr,"from: %d, %d to: %d, %d\n", from.x, from.y, to.x, to.y);
+    fprintf(stderr,"%d: from: %d, %d to: %d, %d\n", ghost->type, from.x, from.y, to.x, to.y);
     return GetMoveDirTo(map, from, to);
 
 }

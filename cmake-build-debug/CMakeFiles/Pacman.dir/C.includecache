@@ -59,6 +59,8 @@ math.h
 -
 stdlib.h
 -
+stdio.h
+-
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 

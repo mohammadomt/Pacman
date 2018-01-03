@@ -4,6 +4,7 @@
 #include "map.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "Values.h"
 
 #ifndef TAHVIL
@@ -94,7 +95,9 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
     from.y = fromY;
     queue[pointer++].current = from;
 
-    while (true)
+    LinkedPoint *res = NULL;
+
+    while (index <= pointer)
     {
         Point current = queue[index++].current;
 
@@ -118,9 +121,12 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
                 queue[pointer++] = child;
                 if (ptNext.x == toX && ptNext.y == toY)
                     return queue + pointer - 1;
+
             }
         }
     }
+
+    return NULL;
 }
 
 Direction GetMoveDirTo(const Map *map, Point from, Point to)
@@ -132,6 +138,11 @@ Direction GetMoveDirTo(const Map *map, Point from, Point to)
         return DIR_NONE;
 
     LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
+    if(queue ==NULL)
+    {
+        fprintf(stderr, "Unreachable point: %d, %d", to.x, to.y);
+        return DIR_NONE;
+    }
     Point search;
     search.x = to.x;
     search.y = to.y;
