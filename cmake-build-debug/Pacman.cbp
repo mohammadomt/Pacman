@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Point.c">
+			<Option target="Pacman"/>
+		</Unit>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Rect.c">
+			<Option target="Pacman"/>
+		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Values.c">
 			<Option target="Pacman"/>
 		</Unit>

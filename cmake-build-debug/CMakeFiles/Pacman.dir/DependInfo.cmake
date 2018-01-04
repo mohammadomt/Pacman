@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/cygdrive/e/Programming/C/Pacman2/src/Point.c" "/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman.dir/src/Point.c.o"
+  "/cygdrive/e/Programming/C/Pacman2/src/Rect.c" "/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman.dir/src/Rect.c.o"
   "/cygdrive/e/Programming/C/Pacman2/src/Values.c" "/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman.dir/src/Values.c.o"
   "/cygdrive/e/Programming/C/Pacman2/src/game.c" "/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman.dir/src/game.c.o"
   "/cygdrive/e/Programming/C/Pacman2/src/map.c" "/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/Pacman.dir/src/map.c.o"

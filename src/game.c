@@ -12,7 +12,6 @@
 #ifndef TAHVIL
 
 #include "Values.h"
-#include "map.h"
 
 #endif
 
@@ -113,6 +112,10 @@ RectD GetPacmanRect(Pacman *pacman)
 }
 #endif
 
+int FreeBlocksCount = 0;
+LinkedPoint *FoundPaths;
+int FoundPathsCount = 0;
+
 void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
 {
     outGame->cheeses = 0;
@@ -172,8 +175,8 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 
     srand(time(NULL));
 
-//    FreeBlocksCount = outMap->height * outMap->width - blocksCount;
-//    FoundPaths = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
+    FreeBlocksCount = outMap->height * outMap->width - blocksCount;
+    FoundPaths = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)

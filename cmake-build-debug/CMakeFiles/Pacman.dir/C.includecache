@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+../src/Basics.h
+stdbool.h
+-
+
+/cygdrive/e/Programming/C/Pacman2/src/Point.c
+Basics.h
+-
+
+/cygdrive/e/Programming/C/Pacman2/src/Rect.c
+Basics.h
+-
+
 /cygdrive/e/Programming/C/Pacman2/src/Values.c
 stdbool.h
 -
@@ -15,6 +27,8 @@ Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
+Basics.h
+-
 
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
 stdbool.h
@@ -37,12 +51,12 @@ time.h
 -
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
-map.h
-/cygdrive/e/Programming/C/Pacman2/src/map.h
 
 /cygdrive/e/Programming/C/Pacman2/src/game.h
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
+Basics.h
+-
 stdbool.h
 -
 map.h
@@ -63,6 +77,8 @@ stdio.h
 -
 Values.h
 /cygdrive/e/Programming/C/Pacman2/src/Values.h
+Basics.h
+-
 
 /cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h
@@ -71,17 +87,11 @@ game.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.c
 physics.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.h
-map.h
-/cygdrive/e/Programming/C/Pacman2/src/map.h
-game.h
-/cygdrive/e/Programming/C/Pacman2/src/game.h
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
+Basics.h
+-
 math.h
 -
 stdio.h
--
-stdlib.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/physics.h

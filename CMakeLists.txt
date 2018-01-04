@@ -17,7 +17,7 @@ set_property(TARGET SDL2_GFX PROPERTY IMPORTED_LOCATION "${SDL2_GFX_LibDir}/libs
 
 set(SDL2_Libs SDL2 SDL2main SDL2_GFX m dinput8 dxguid dxerr8 user32 gdi32 winmm imm32 ole32 oleaut32 shell32 version uuid)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${SDL2_Flags}")
-set(SOURCE src/game.c src/physics.c src/map.c src/Values.c src/Values.h)
+set(SOURCE src/game.c src/physics.c src/map.c src/Values.c src/Values.h src/Point.c src/Rect.c)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 

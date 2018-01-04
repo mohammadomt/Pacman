@@ -6,6 +6,7 @@
 #ifndef TAHVIL
 
 #include "Values.h"
+#include <Basics.h>
 
 #endif
 
@@ -105,9 +106,7 @@ typedef struct
     Direction dir;
 } LinkedPoint;
 
-//int FreeBlocksCount = 0;
-//LinkedPoint *FoundPaths;
-//int FoundPathsCount = 0;
+
 LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY);
 Direction GetMoveDirTo(const Map *map, Point from, Point to);
 

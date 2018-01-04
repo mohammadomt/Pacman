@@ -123,6 +123,60 @@ Pacman/fast:
 	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/build
 .PHONY : Pacman/fast
 
+src/Point.o: src/Point.c.o
+
+.PHONY : src/Point.o
+
+# target to build an object file
+src/Point.c.o:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Point.c.o
+.PHONY : src/Point.c.o
+
+src/Point.i: src/Point.c.i
+
+.PHONY : src/Point.i
+
+# target to preprocess a source file
+src/Point.c.i:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Point.c.i
+.PHONY : src/Point.c.i
+
+src/Point.s: src/Point.c.s
+
+.PHONY : src/Point.s
+
+# target to generate assembly for a file
+src/Point.c.s:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Point.c.s
+.PHONY : src/Point.c.s
+
+src/Rect.o: src/Rect.c.o
+
+.PHONY : src/Rect.o
+
+# target to build an object file
+src/Rect.c.o:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Rect.c.o
+.PHONY : src/Rect.c.o
+
+src/Rect.i: src/Rect.c.i
+
+.PHONY : src/Rect.i
+
+# target to preprocess a source file
+src/Rect.c.i:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Rect.c.i
+.PHONY : src/Rect.c.i
+
+src/Rect.s: src/Rect.c.s
+
+.PHONY : src/Rect.s
+
+# target to generate assembly for a file
+src/Rect.c.s:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Rect.c.s
+.PHONY : src/Rect.c.s
+
 src/Values.o: src/Values.c.o
 
 .PHONY : src/Values.o
@@ -240,6 +294,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Pacman"
+	@echo "... src/Point.o"
+	@echo "... src/Point.i"
+	@echo "... src/Point.s"
+	@echo "... src/Rect.o"
+	@echo "... src/Rect.i"
+	@echo "... src/Rect.s"
 	@echo "... src/Values.o"
 	@echo "... src/Values.i"
 	@echo "... src/Values.s"

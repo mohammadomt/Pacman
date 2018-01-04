@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "Values.h"
 #include "game.h"
+#include <Basics.h>
 
 int Sign(double number)
 {
@@ -14,20 +15,6 @@ int Sign(double number)
 double Abs(double number)
 {
     return number >= 0 ? number : -number;
-}
-
-bool RectContains(RectD rect, double x, double y)
-{
-    return (x >= rect.left && x <= rect.right) && (y >= rect.top && y <= rect.bottom);
-}
-
-//Check intersection. Shared edges are also OK.
-bool RectIntersectsWith(RectD src, RectD dst)
-{
-    return src.top < dst.bottom &&
-           src.left < dst.right &&
-           src.bottom > dst.top &&
-           src.right > dst.left;
 }
 
 void PrintPacman(Pacman *outPacman)
@@ -52,9 +39,6 @@ RectD GetPacmanRect(Pacman *pacman)
     return retVal;
 }
 
-bool PtIsEqual(Point *p1, Point *p2)
-{
-    return p1->x == p2->x && p1->y == p2->y;
-}
+
 
 #endif

@@ -1,12 +1,9 @@
 #undef TAHVIL
 
 #include "physics.h"
-#include "map.h"
-#include "game.h"
-#include "Values.h"
+#include <Basics.h>
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #ifdef TAHVIL
 void MakeInBounds(int *, int *, const Map *);

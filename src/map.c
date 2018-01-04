@@ -1,4 +1,5 @@
 #undef TAHVIL
+#ifndef TAHVIL
 
 #include "game.h"
 #include "map.h"
@@ -6,8 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Values.h"
+#include <Basics.h>
 
-#ifndef TAHVIL
 
 void MakeInBounds(const Map *map, int *x, int *y)
 {
@@ -84,6 +85,10 @@ void GetPacmanCCell(Pacman *pacman, int *x, int *y)
 }
 
 
+extern int FreeBlocksCount;
+extern LinkedPoint *FoundPaths;
+extern int FoundPathsCount;
+
 LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
 {
     LinkedPoint *queue = (LinkedPoint *) malloc(MAP_MAX_SIZE * MAP_MAX_SIZE * sizeof(LinkedPoint));
@@ -131,14 +136,17 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
 
 Direction GetMoveDirTo(const Map *map, Point from, Point to)
 {
-//    for (int i = 0; i < FoundPathsCount; i++)
-//        if (PtIsEqual(&FoundPaths[i].pre, &from) && PtIsEqual(&FoundPaths[i].current, &to))
-//            return FoundPaths[i].dir;
+    for (int i = 0; i < FoundPathsCount; i++)
+        if (PtIsEqual(&FoundPaths[i].pre, &from) && PtIsEqual(&FoundPaths[i].current, &to))
+        {
+            fprintf(stderr, "Repeated: %d, %d to %d, %d\n",from.x, from.y, to.x, to.y);
+            return FoundPaths[i].dir;
+        }
     if (PtIsEqual(&from, &to))
         return DIR_NONE;
 
     LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
-    if(queue ==NULL)
+    if(queue == NULL)
     {
         fprintf(stderr, "Unreachable point: %d, %d", to.x, to.y);
         return DIR_NONE;
@@ -162,7 +170,12 @@ Direction GetMoveDirTo(const Map *map, Point from, Point to)
         queue--;
     }
 
-//    free(queue);
+    LinkedPoint newRec;
+    newRec.pre = from;
+    newRec.current = to;
+    newRec.dir = res;
+    FoundPaths[FoundPathsCount++] = newRec;
+
     return res;
 }
 

@@ -153,12 +153,62 @@ CMakeFiles/Pacman.dir/src/Values.c.o.provides: CMakeFiles/Pacman.dir/src/Values.
 CMakeFiles/Pacman.dir/src/Values.c.o.provides.build: CMakeFiles/Pacman.dir/src/Values.c.o
 
 
+CMakeFiles/Pacman.dir/src/Point.c.o: CMakeFiles/Pacman.dir/flags.make
+CMakeFiles/Pacman.dir/src/Point.c.o: ../src/Point.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Pacman.dir/src/Point.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Pacman.dir/src/Point.c.o   -c /cygdrive/e/Programming/C/Pacman2/src/Point.c
+
+CMakeFiles/Pacman.dir/src/Point.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Pacman.dir/src/Point.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/e/Programming/C/Pacman2/src/Point.c > CMakeFiles/Pacman.dir/src/Point.c.i
+
+CMakeFiles/Pacman.dir/src/Point.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Pacman.dir/src/Point.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/e/Programming/C/Pacman2/src/Point.c -o CMakeFiles/Pacman.dir/src/Point.c.s
+
+CMakeFiles/Pacman.dir/src/Point.c.o.requires:
+
+.PHONY : CMakeFiles/Pacman.dir/src/Point.c.o.requires
+
+CMakeFiles/Pacman.dir/src/Point.c.o.provides: CMakeFiles/Pacman.dir/src/Point.c.o.requires
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Point.c.o.provides.build
+.PHONY : CMakeFiles/Pacman.dir/src/Point.c.o.provides
+
+CMakeFiles/Pacman.dir/src/Point.c.o.provides.build: CMakeFiles/Pacman.dir/src/Point.c.o
+
+
+CMakeFiles/Pacman.dir/src/Rect.c.o: CMakeFiles/Pacman.dir/flags.make
+CMakeFiles/Pacman.dir/src/Rect.c.o: ../src/Rect.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/Pacman.dir/src/Rect.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Pacman.dir/src/Rect.c.o   -c /cygdrive/e/Programming/C/Pacman2/src/Rect.c
+
+CMakeFiles/Pacman.dir/src/Rect.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Pacman.dir/src/Rect.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/e/Programming/C/Pacman2/src/Rect.c > CMakeFiles/Pacman.dir/src/Rect.c.i
+
+CMakeFiles/Pacman.dir/src/Rect.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Pacman.dir/src/Rect.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/e/Programming/C/Pacman2/src/Rect.c -o CMakeFiles/Pacman.dir/src/Rect.c.s
+
+CMakeFiles/Pacman.dir/src/Rect.c.o.requires:
+
+.PHONY : CMakeFiles/Pacman.dir/src/Rect.c.o.requires
+
+CMakeFiles/Pacman.dir/src/Rect.c.o.provides: CMakeFiles/Pacman.dir/src/Rect.c.o.requires
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Rect.c.o.provides.build
+.PHONY : CMakeFiles/Pacman.dir/src/Rect.c.o.provides
+
+CMakeFiles/Pacman.dir/src/Rect.c.o.provides.build: CMakeFiles/Pacman.dir/src/Rect.c.o
+
+
 # Object files for target Pacman
 Pacman_OBJECTS = \
 "CMakeFiles/Pacman.dir/src/game.c.o" \
 "CMakeFiles/Pacman.dir/src/physics.c.o" \
 "CMakeFiles/Pacman.dir/src/map.c.o" \
-"CMakeFiles/Pacman.dir/src/Values.c.o"
+"CMakeFiles/Pacman.dir/src/Values.c.o" \
+"CMakeFiles/Pacman.dir/src/Point.c.o" \
+"CMakeFiles/Pacman.dir/src/Rect.c.o"
 
 # External object files for target Pacman
 Pacman_EXTERNAL_OBJECTS =
@@ -167,13 +217,15 @@ Pacman.exe: CMakeFiles/Pacman.dir/src/game.c.o
 Pacman.exe: CMakeFiles/Pacman.dir/src/physics.c.o
 Pacman.exe: CMakeFiles/Pacman.dir/src/map.c.o
 Pacman.exe: CMakeFiles/Pacman.dir/src/Values.c.o
+Pacman.exe: CMakeFiles/Pacman.dir/src/Point.c.o
+Pacman.exe: CMakeFiles/Pacman.dir/src/Rect.c.o
 Pacman.exe: CMakeFiles/Pacman.dir/build.make
 Pacman.exe: E:/Programming/C/Pacman2/liblib.a
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-lib/libSDL2.a
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-lib/libSDL2main.a
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-gfx-lib/libsdl-gfx.a
 Pacman.exe: CMakeFiles/Pacman.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable Pacman.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable Pacman.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Pacman.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -185,6 +237,8 @@ CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/game.c.o.requires
 CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/physics.c.o.requires
 CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/map.c.o.requires
 CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/Values.c.o.requires
+CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/Point.c.o.requires
+CMakeFiles/Pacman.dir/requires: CMakeFiles/Pacman.dir/src/Rect.c.o.requires
 
 .PHONY : CMakeFiles/Pacman.dir/requires
 
