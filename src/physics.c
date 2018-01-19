@@ -1,6 +1,7 @@
 #undef TAHVIL
 
 #include "physics.h"
+#include "game.h"
 #include <Basics.h>
 #include <math.h>
 #include <stdio.h>
@@ -41,15 +42,17 @@ Point DirToPt(Direction dir)
 
 Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blinky)
 {
-    Point from, to;
-    from.x = (int) ghost->x;
-    from.y = (int) ghost->y;
+    Point from = {(int) ghost->x, (int) ghost->y}, to;
 
+    if (ghost->blue)
+    {
+        fprintf(stderr, "%d: from: %d, %d to: %d, %d(blue)\n", ghost->type, from.x, from.y, to.x, to.y);
+        return GetMoveDirTo(map, from, (Point) {ghost->startX, ghost->startY});
+    }
     switch (ghost->type)
     {
         case BLINKY:
-            to.x = (int) pacman->x;
-            to.y = (int) pacman->y;
+            to = (Point) {(int) pacman->x, (int) pacman->y};
             break;
         case PINKY:
         {
@@ -76,30 +79,22 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
         case INKY:
         {
             Point pivot = DirToPt(pacman->dir);
-            pivot.x = (int)pacman->x + pivot.x *2 ;
-            pivot.y = (int)pacman->y + pivot.y *2 ;
-            int x  = 2 * pivot.x - (int)blinky->x, y = 2 * pivot.y  - (int)blinky->y;
+            pivot.x = (int) pacman->x + pivot.x * 2;
+            pivot.y = (int) pacman->y + pivot.y * 2;
+            int x = 2 * pivot.x - (int) blinky->x, y = 2 * pivot.y - (int) blinky->y;
             MakeInBounds(map, &x, &y);
-            Point toGo = GetNearestNB(map, x, y);
-            to.x = toGo.x;
-            to.y = toGo.y;
+            to = GetNearestNB(map, x, y);
         }
             break;
         case CLYDE:
-
             if (Abs(ghost->x - pacman->x) + Abs(ghost->y - pacman->y) > 8)
-            {
-                to.x = (int) pacman->x;
-                to.y = (int) pacman->y;
-                break;
-            }
+                to = (Point) {(int) pacman->x, (int) pacman->y};
+            else
+                to = GetNearestNB(map, 0, map->height - 1);
 
-            Point lb  = GetNearestNB(map, 0, map->height - 1);
-            to.x = lb.x;
-            to.y = lb.y;
             break;
     }
-    fprintf(stderr,"%d: from: %d, %d to: %d, %d\n", ghost->type, from.x, from.y, to.x, to.y);
+    fprintf(stderr, "%d: from: %d, %d to: %d, %d\n", ghost->type, from.x, from.y, to.x, to.y);
     return GetMoveDirTo(map, from, to);
 
 }

@@ -87,6 +87,8 @@ game.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.c
 physics.h
 /cygdrive/e/Programming/C/Pacman2/src/physics.h
+game.h
+/cygdrive/e/Programming/C/Pacman2/src/game.h
 Basics.h
 -
 math.h
