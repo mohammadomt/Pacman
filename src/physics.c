@@ -60,7 +60,7 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             int i;
             Point ptDir = DirToPt(pacman->dir);
             int x, y;
-            for (i = 0; i <= 4; i++)
+            for (i = 1; i <= 4; i++)
             {
                 x = (int) pacman->x + ptDir.x * i;
                 y = (int) pacman->y + ptDir.y * i;
@@ -83,14 +83,17 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             pivot.y = (int) pacman->y + pivot.y * 2;
             int x = 2 * pivot.x - (int) blinky->x, y = 2 * pivot.y - (int) blinky->y;
             MakeInBounds(map, &x, &y);
-            to = GetNearestNB(map, x, y);
+            to = GetNearestNB(map, x, y, from);
+
+            fprintf(stderr, "INKY special log: pacman: %d, %d  blinky: %d, %d, target: %d, %d\n", pivot.x, pivot.y,
+                    (int) blinky->x, (int) blinky->y, to.x, to.y);
         }
             break;
         case CLYDE:
             if (Abs(ghost->x - pacman->x) + Abs(ghost->y - pacman->y) > 8)
                 to = (Point) {(int) pacman->x, (int) pacman->y};
             else
-                to = GetNearestNB(map, 0, map->height - 1);
+                to = GetNearestNB(map, 0, map->height - 1, from);
 
             break;
     }

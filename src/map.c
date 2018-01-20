@@ -70,6 +70,7 @@ Direction PtToDir(Point pt)
         return DIR_DOWN;
     else if (pt.x == -1)
         return DIR_LEFT;
+    return DIR_NONE;
 }
 
 bool IsVertical(Direction dir)
@@ -126,7 +127,6 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
                 queue[pointer++] = child;
                 if (ptNext.x == toX && ptNext.y == toY)
                     return queue + pointer - 1;
-
             }
         }
     }
@@ -136,6 +136,7 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
 
 Direction GetMoveDirTo(const Map *map, Point from, Point to)
 {
+    //Checking equality
     if (PtIsEqual(&to, &from))
     {
         //Copied from Phase1
@@ -154,36 +155,51 @@ Direction GetMoveDirTo(const Map *map, Point from, Point to)
         return (Direction) (i % 4 + 1);
     }
 
+    //Checking repeated moves
     for (int i = 0; i < FoundPathsCount; i++)
-        if (PtIsEqual(&FoundPaths[i].pre, &from) && PtIsEqual(&FoundPaths[i].current, &to))
-        {
-            fprintf(stderr, "Repeated: %d, %d to %d, %d\n", from.x, from.y, to.x, to.y);
-            return FoundPaths[i].dir;
-        }
+        if (PtIsEqual(&FoundPaths[i].current, &to))
+            if (FoundPaths[i].dir == DIR_NONE)
+            {
+                fprintf(stderr, "Repeated unreachable point: %d, %d\n", to.x, to.y);
+                return DIR_NONE;
+            } else if (PtIsEqual(&FoundPaths[i].pre, &from))
+            {
+                fprintf(stderr, "Repeated: %d, %d to %d, %d\n", from.x, from.y, to.x, to.y);
+                return FoundPaths[i].dir;
+            }
 
+    //Getting path
     LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
+    Direction res;
     if (queue == NULL)
     {
         fprintf(stderr, "Unreachable point: %d, %d\n", to.x, to.y);
-        return DIR_NONE;
-    }
-    Point search = to;
-    Direction res;
-    while (true)
+        res = DIR_NONE;
+    } else
     {
-        if (PtIsEqual(&queue->current, &search))
-            if (PtIsEqual(&queue->pre, &from))
-            {
-                Point ptDir = search;
-                ptDir.x -= from.x;
-                ptDir.y -= from.y;
-                res = PtToDir(ptDir);
-                break;
-            } else
-                search = queue->pre;
-        queue--;
+        //Extracting the next move
+        Point search = to;
+        while (true)
+        {
+            if (PtIsEqual(&queue->current, &search))
+                if (PtIsEqual(&queue->pre, &from))
+                {
+                    Point ptDir = search;
+                    ptDir.x -= from.x;
+                    ptDir.y -= from.y;
+                    if (Abs(ptDir.x) > 1)
+                        ptDir.x += -Sign(ptDir.x) * map->width;
+                    if (Abs(ptDir.y) > 1)
+                        ptDir.y += -Sign(ptDir.y) * map->height;
+                    res = PtToDir(ptDir);
+                    break;
+                } else
+                    search = queue->pre;
+            queue--;
+        }
     }
 
+    //Adding new found path
     LinkedPoint newRec;
     newRec.pre = from;
     newRec.current = to;
@@ -193,7 +209,30 @@ Direction GetMoveDirTo(const Map *map, Point from, Point to)
     return res;
 }
 
-Point GetNearestNB(const Map *map, int x, int y)
+bool IsReachable(const Map *map, Point pt, Point from)
+{
+    for (int i = 0; i < FoundPathsCount; i++)
+        if (PtIsEqual(&FoundPaths[i].current, &pt))
+            if (FoundPaths[i].dir == DIR_NONE)
+            {
+                fprintf(stderr, "Repeated unreachable point: %d, %d\n", pt.x, pt.y);
+                return false;
+            } else
+                return true;
+    if (FindPath(map, from.x, from.y, pt.x, pt.y) == NULL)
+    {
+        LinkedPoint newRec;
+        newRec.pre = from;
+        newRec.current = pt;
+        newRec.dir = DIR_NONE;
+        FoundPaths[FoundPathsCount++] = newRec;
+        fprintf(stderr, "Unreachable point is found and stored: %d, %d\n", pt.x, pt.y);
+        return false;
+    } else
+        return true;
+}
+
+Point GetNearestNB(const Map *map, int x, int y, Point helper)
 {
     int radius = 0;
     while (true)
@@ -202,13 +241,8 @@ Point GetNearestNB(const Map *map, int x, int y)
         for (int i = -radius; i <= radius; i++)
             for (int j = -radius; j <= radius; j++)
                 if (x + i >= 0 && x + i < map->width && y + j >= 0 && y + j < map->height)
-                    if (map->cells[x + i][y + j] != CELL_BLOCK)
-                    {
-                        Point retVal;
-                        retVal.x = x + i;
-                        retVal.y = y + j;
-                        return retVal;
-                    }
+                    if (map->cells[x + i][y + j] != CELL_BLOCK && IsReachable(map, (Point) {x + i, y + j}, helper))
+                        return (Point) {x + i, y + j};
     }
 }
 

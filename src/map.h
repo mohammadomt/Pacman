@@ -27,7 +27,7 @@ typedef struct
 
 void MakeInBounds(const Map *, int *, int *);
 
-Point GetNearestNB(const Map *map, int x, int y);
+Point GetNearestNB(const Map *map, int x, int y, Point helper);
 
 #endif
 
