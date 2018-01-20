@@ -23,15 +23,9 @@ stdbool.h
 -
 stdio.h
 -
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
 game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
 Basics.h
--
-
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
-stdbool.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/game.c
@@ -49,18 +43,14 @@ stdlib.h
 -
 time.h
 -
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
 
 /cygdrive/e/Programming/C/Pacman2/src/game.h
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
-Basics.h
--
 stdbool.h
 -
 map.h
 /cygdrive/e/Programming/C/Pacman2/src/map.h
+Basics.h
+-
 
 /cygdrive/e/Programming/C/Pacman2/src/input.h
 
@@ -75,14 +65,14 @@ stdlib.h
 -
 stdio.h
 -
-Values.h
-/cygdrive/e/Programming/C/Pacman2/src/Values.h
 Basics.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h
 /cygdrive/e/Programming/C/Pacman2/src/game.h
+Basics.h
+-
 
 /cygdrive/e/Programming/C/Pacman2/src/physics.c
 physics.h

@@ -1,12 +1,8 @@
-#undef TAHVIL
-#ifndef TAHVIL
-
 #include "game.h"
 #include "map.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "Values.h"
 #include <Basics.h>
 
 
@@ -245,5 +241,3 @@ Point GetNearestNB(const Map *map, int x, int y, Point helper)
                         return (Point) {x + i, y + j};
     }
 }
-
-#endif

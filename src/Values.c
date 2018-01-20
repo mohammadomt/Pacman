@@ -1,9 +1,5 @@
-#undef TAHVIL
-
-#ifndef TAHVIL
 #include <stdbool.h>
 #include <stdio.h>
-#include "Values.h"
 #include "game.h"
 #include <Basics.h>
 
@@ -38,7 +34,3 @@ RectD GetPacmanRect(Pacman *pacman)
     retVal.right = retVal.left+1;
     return retVal;
 }
-
-
-
-#endif

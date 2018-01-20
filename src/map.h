@@ -1,9 +1,8 @@
-#undef TAHVIL
-
 #ifndef __MAP_H
 #define __MAP_H
 
 #include "game.h"
+#include <Basics.h>
 
 typedef enum
 {
@@ -23,12 +22,8 @@ typedef struct
     Cell cells[MAP_MAX_SIZE][MAP_MAX_SIZE];
 } Map;
 
-#ifndef TAHVIL
-
 void MakeInBounds(const Map *, int *, int *);
 
 Point GetNearestNB(const Map *map, int x, int y, Point helper);
-
-#endif
 
 #endif

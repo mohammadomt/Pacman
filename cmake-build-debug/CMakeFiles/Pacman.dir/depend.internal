@@ -10,12 +10,10 @@ CMakeFiles/Pacman.dir/src/Rect.c.o
 CMakeFiles/Pacman.dir/src/Values.c.o
  ../src/Basics.h
  /cygdrive/e/Programming/C/Pacman2/src/Values.c
- /cygdrive/e/Programming/C/Pacman2/src/Values.h
  /cygdrive/e/Programming/C/Pacman2/src/game.h
  /cygdrive/e/Programming/C/Pacman2/src/map.h
 CMakeFiles/Pacman.dir/src/game.c.o
  ../src/Basics.h
- /cygdrive/e/Programming/C/Pacman2/src/Values.h
  /cygdrive/e/Programming/C/Pacman2/src/game.c
  /cygdrive/e/Programming/C/Pacman2/src/game.h
  /cygdrive/e/Programming/C/Pacman2/src/input.h
@@ -23,13 +21,11 @@ CMakeFiles/Pacman.dir/src/game.c.o
  /cygdrive/e/Programming/C/Pacman2/src/physics.h
 CMakeFiles/Pacman.dir/src/map.c.o
  ../src/Basics.h
- /cygdrive/e/Programming/C/Pacman2/src/Values.h
  /cygdrive/e/Programming/C/Pacman2/src/game.h
  /cygdrive/e/Programming/C/Pacman2/src/map.c
  /cygdrive/e/Programming/C/Pacman2/src/map.h
 CMakeFiles/Pacman.dir/src/physics.c.o
  ../src/Basics.h
- /cygdrive/e/Programming/C/Pacman2/src/Values.h
  /cygdrive/e/Programming/C/Pacman2/src/game.h
  /cygdrive/e/Programming/C/Pacman2/src/input.h
  /cygdrive/e/Programming/C/Pacman2/src/map.h

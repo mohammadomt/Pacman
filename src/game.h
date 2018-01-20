@@ -1,17 +1,11 @@
-#undef TAHVIL
 
 #ifndef __GAME_H
 #define __GAME_H
 
-#ifndef TAHVIL
-
-#include "Values.h"
-#include <Basics.h>
-
-#endif
 
 #include <stdbool.h>
 #include "map.h"
+#include <Basics.h>
 
 typedef enum {
     DIR_UP = 1,
@@ -79,8 +73,6 @@ bool isGameFinished(Game *game, Pacman *pacman);
 // TO WRITE
 void checkGhostState(Ghost *ghost);
 
-#ifndef TAHVIL
-
 Point DirToPt(Direction dir);
 
 Direction PtToDir(Point pt);
@@ -109,7 +101,5 @@ typedef struct
 
 LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY);
 Direction GetMoveDirTo(const Map *map, Point from, Point to);
-
-#endif
 
 #endif

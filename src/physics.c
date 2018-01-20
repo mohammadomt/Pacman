@@ -1,44 +1,8 @@
-#undef TAHVIL
-
 #include "physics.h"
 #include "game.h"
 #include <Basics.h>
 #include <math.h>
 #include <stdio.h>
-
-#ifdef TAHVIL
-void MakeInBounds(int *, int *, const Map *);
-
-typedef struct
-{
-    int x;
-    int y;
-} Point;
-
-Point DirToPt(Direction dir)
-{
-    Point retVal;
-    retVal.x = 0;
-    retVal.y = 0;
-    switch (dir)
-    {
-        case DIR_UP:
-            retVal.y = -1;
-            break;
-        case DIR_RIGHT:
-            retVal.x = 1;
-            break;
-        case DIR_DOWN:
-            retVal.y = 1;
-            break;
-        case DIR_LEFT:
-            retVal.x = -1;
-            break;
-    }
-    return retVal;
-}
-
-#endif
 
 Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blinky)
 {
