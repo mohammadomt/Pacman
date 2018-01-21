@@ -18,21 +18,6 @@ void MakeInBounds(const Map *map, int *x, int *y)
         *y = *y % map->height;
 }
 
-int GetDirSign(Direction dir)
-{
-    switch (dir)
-    {
-        case DIR_DOWN:
-        case DIR_RIGHT:
-            return 1;
-        case DIR_UP:
-        case DIR_LEFT:
-            return -1;
-        default:
-            return 0;
-    }
-}
-
 Point DirToPt(Direction dir)
 {
     Point retVal;
@@ -69,12 +54,6 @@ Direction PtToDir(Point pt)
     return DIR_NONE;
 }
 
-bool IsVertical(Direction dir)
-{ return dir == DIR_UP || dir == DIR_DOWN; }
-
-bool IsHorizontal(Direction dir)
-{ return dir == DIR_LEFT || dir == DIR_RIGHT; }
-
 void GetPacmanCCell(Pacman *pacman, int *x, int *y)
 {
     *x = (int) round(pacman->x);
@@ -86,7 +65,7 @@ extern int FreeBlocksCount;
 extern LinkedPoint *FoundPaths;
 extern int FoundPathsCount;
 
-LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
+LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY) //deprecated
 {
     LinkedPoint *queue = (LinkedPoint *) malloc(MAP_MAX_SIZE * MAP_MAX_SIZE * sizeof(LinkedPoint));
     bool visited[MAP_MAX_SIZE][MAP_MAX_SIZE] = {false};
@@ -97,9 +76,7 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
     from.y = fromY;
     queue[pointer++].current = from;
 
-    LinkedPoint *res = NULL;
-
-    while (index <= pointer)
+    while (index < pointer)
     {
         Point current = queue[index++].current;
 
@@ -128,6 +105,53 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY)
     }
 
     return NULL;
+}
+
+Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
+{
+    LinkedPoint *queue = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
+    bool visited[MAP_MAX_SIZE][MAP_MAX_SIZE] = {false};
+
+    int index = 0, pointer = 0;
+    Point from;
+    //We work reversely to find next move
+    from.x = toX;
+    from.y = toY;
+    queue[pointer++].current = from;
+
+    while (index < pointer)
+    {
+        Point current = queue[index++].current;
+
+        visited[current.x][current.y] = true;
+
+        for (int dir = 1; dir <= 4; dir++)
+        {
+            Point ptNext = DirToPt((Direction) dir);
+            ptNext.x += current.x;
+            ptNext.y += current.y;
+            MakeInBounds(map, &ptNext.x, &ptNext.y);
+
+            if (visited[ptNext.x][ptNext.y])
+                continue;
+
+            if (map->cells[ptNext.x][ptNext.y] != CELL_BLOCK)
+            {
+                LinkedPoint child;
+                child.current = ptNext;
+                child.pre = current;
+                queue[pointer++] = child;
+                if (ptNext.x == fromX && ptNext.y == fromY)
+                {
+                    free(queue);
+                    return current;
+                }
+            }
+        }
+    }
+
+    free(queue);
+    return (Point) {-1, -1};
 }
 
 Direction GetMoveDirTo(const Map *map, Point from, Point to)
@@ -165,34 +189,50 @@ Direction GetMoveDirTo(const Map *map, Point from, Point to)
             }
 
     //Getting path
-    LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
+//    LinkedPoint *queue = FindPath(map, from.x, from.y, to.x, to.y);
     Direction res;
-    if (queue == NULL)
+//    if (queue == NULL)
+//    {
+//        fprintf(stderr, "Unreachable point: %d, %d\n", to.x, to.y);
+//        res = DIR_NONE;
+//    } else
+//    {
+//        //Extracting the next move
+//        Point search = to;
+//        while (true)
+//        {
+//            if (PtIsEqual(&queue->current, &search))
+//                if (PtIsEqual(&queue->pre, &from))
+//                {
+//                    Point ptDir = search;
+//                    ptDir.x -= from.x;
+//                    ptDir.y -= from.y;
+//                    if (Abs(ptDir.x) > 1)
+//                        ptDir.x += -Sign(ptDir.x) * map->width;
+//                    if (Abs(ptDir.y) > 1)
+//                        ptDir.y += -Sign(ptDir.y) * map->height;
+//                    res = PtToDir(ptDir);
+//                    break;
+//                } else
+//                    search = queue->pre;
+//            queue--;
+//        }
+//    }
+
+    Point ptDir = FindPathNext(map, from.x, from.y, to.x, to.y);
+    if (ptDir.x == -1)
     {
-        fprintf(stderr, "Unreachable point: %d, %d\n", to.x, to.y);
+        fprintf(stderr, "Unreachable point is found and stored: %d, %d\n", to.x, to.y);
         res = DIR_NONE;
     } else
     {
-        //Extracting the next move
-        Point search = to;
-        while (true)
-        {
-            if (PtIsEqual(&queue->current, &search))
-                if (PtIsEqual(&queue->pre, &from))
-                {
-                    Point ptDir = search;
-                    ptDir.x -= from.x;
-                    ptDir.y -= from.y;
-                    if (Abs(ptDir.x) > 1)
-                        ptDir.x += -Sign(ptDir.x) * map->width;
-                    if (Abs(ptDir.y) > 1)
-                        ptDir.y += -Sign(ptDir.y) * map->height;
-                    res = PtToDir(ptDir);
-                    break;
-                } else
-                    search = queue->pre;
-            queue--;
-        }
+        ptDir.x -= from.x;
+        ptDir.y -= from.y;
+        if (Abs(ptDir.x) > 1)
+            ptDir.x += -Sign(ptDir.x) * map->width;
+        if (Abs(ptDir.y) > 1)
+            ptDir.y += -Sign(ptDir.y) * map->height;
+        res = PtToDir(ptDir);
     }
 
     //Adding new found path
@@ -215,7 +255,7 @@ bool IsReachable(const Map *map, Point pt, Point from)
                 return false;
             } else
                 return true;
-    if (FindPath(map, from.x, from.y, pt.x, pt.y) == NULL)
+    if (FindPathNext(map, from.x, from.y, pt.x, pt.y).x == -1)
     {
         LinkedPoint newRec;
         newRec.pre = from;
