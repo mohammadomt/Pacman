@@ -4,7 +4,7 @@
 #include "game.h"
 #include "input.h"
 
-#define PACMAN_DEFAULT_SPEED 4.
+#define PACMAN_DEFAULT_SPEED 5.
 #define GHOST_DEFAULT_SPEED 4.
 
 // TO WRITE

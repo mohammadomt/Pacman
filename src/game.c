@@ -73,6 +73,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 
     FreeBlocksCount = outMap->height * outMap->width - blocksCount;
     FoundPaths = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
+
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)

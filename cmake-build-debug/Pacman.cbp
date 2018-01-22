@@ -45,6 +45,8 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/src"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-gfx-include"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include"/>
 					<Add directory="/usr/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
@@ -67,6 +69,8 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/src"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-gfx-include"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include"/>
 					<Add directory="/usr/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
@@ -82,10 +86,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Graphics.c">
+			<Option target="Pacman"/>
+		</Unit>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Graphics.h">
+			<Option target="Pacman"/>
+		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Point.c">
 			<Option target="Pacman"/>
 		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Rect.c">
+			<Option target="Pacman"/>
+		</Unit>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/SDLHelper.c">
+			<Option target="Pacman"/>
+		</Unit>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/SDLHelper.h">
 			<Option target="Pacman"/>
 		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/Values.c">
@@ -95,6 +111,9 @@
 			<Option target="Pacman"/>
 		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/game.h">
+			<Option target="Pacman"/>
+		</Unit>
+		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/main.c">
 			<Option target="Pacman"/>
 		</Unit>
 		<Unit filename="/cygdrive/e/Programming/C/Pacman2/src/map.c">

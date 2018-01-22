@@ -100,6 +100,7 @@ typedef struct
 
 
 LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY);
+Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY);
 Direction GetMoveDirTo(const Map *map, Point from, Point to);
 
 #endif

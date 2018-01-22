@@ -123,6 +123,33 @@ Pacman/fast:
 	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/build
 .PHONY : Pacman/fast
 
+src/Graphics.o: src/Graphics.c.o
+
+.PHONY : src/Graphics.o
+
+# target to build an object file
+src/Graphics.c.o:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Graphics.c.o
+.PHONY : src/Graphics.c.o
+
+src/Graphics.i: src/Graphics.c.i
+
+.PHONY : src/Graphics.i
+
+# target to preprocess a source file
+src/Graphics.c.i:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Graphics.c.i
+.PHONY : src/Graphics.c.i
+
+src/Graphics.s: src/Graphics.c.s
+
+.PHONY : src/Graphics.s
+
+# target to generate assembly for a file
+src/Graphics.c.s:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Graphics.c.s
+.PHONY : src/Graphics.c.s
+
 src/Point.o: src/Point.c.o
 
 .PHONY : src/Point.o
@@ -177,6 +204,33 @@ src/Rect.c.s:
 	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/Rect.c.s
 .PHONY : src/Rect.c.s
 
+src/SDLHelper.o: src/SDLHelper.c.o
+
+.PHONY : src/SDLHelper.o
+
+# target to build an object file
+src/SDLHelper.c.o:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/SDLHelper.c.o
+.PHONY : src/SDLHelper.c.o
+
+src/SDLHelper.i: src/SDLHelper.c.i
+
+.PHONY : src/SDLHelper.i
+
+# target to preprocess a source file
+src/SDLHelper.c.i:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/SDLHelper.c.i
+.PHONY : src/SDLHelper.c.i
+
+src/SDLHelper.s: src/SDLHelper.c.s
+
+.PHONY : src/SDLHelper.s
+
+# target to generate assembly for a file
+src/SDLHelper.c.s:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/SDLHelper.c.s
+.PHONY : src/SDLHelper.c.s
+
 src/Values.o: src/Values.c.o
 
 .PHONY : src/Values.o
@@ -230,6 +284,33 @@ src/game.s: src/game.c.s
 src/game.c.s:
 	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/game.c.s
 .PHONY : src/game.c.s
+
+src/main.o: src/main.c.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.c.o:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/main.c.o
+.PHONY : src/main.c.o
+
+src/main.i: src/main.c.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.c.i:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/main.c.i
+.PHONY : src/main.c.i
+
+src/main.s: src/main.c.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.c.s:
+	$(MAKE) -f CMakeFiles/Pacman.dir/build.make CMakeFiles/Pacman.dir/src/main.c.s
+.PHONY : src/main.c.s
 
 src/map.o: src/map.c.o
 
@@ -294,18 +375,27 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Pacman"
+	@echo "... src/Graphics.o"
+	@echo "... src/Graphics.i"
+	@echo "... src/Graphics.s"
 	@echo "... src/Point.o"
 	@echo "... src/Point.i"
 	@echo "... src/Point.s"
 	@echo "... src/Rect.o"
 	@echo "... src/Rect.i"
 	@echo "... src/Rect.s"
+	@echo "... src/SDLHelper.o"
+	@echo "... src/SDLHelper.i"
+	@echo "... src/SDLHelper.s"
 	@echo "... src/Values.o"
 	@echo "... src/Values.i"
 	@echo "... src/Values.s"
 	@echo "... src/game.o"
 	@echo "... src/game.i"
 	@echo "... src/game.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 	@echo "... src/map.o"
 	@echo "... src/map.i"
 	@echo "... src/map.s"

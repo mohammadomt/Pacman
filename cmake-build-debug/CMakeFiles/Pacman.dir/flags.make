@@ -6,5 +6,5 @@ C_FLAGS = -g   -std=gnu99
 
 C_DEFINES = 
 
-C_INCLUDES = -I/cygdrive/e/Programming/C/Pacman2/src 
+C_INCLUDES = -I/cygdrive/e/Programming/C/Pacman2/src -I/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-gfx-include -I/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-include 
 
