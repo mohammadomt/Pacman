@@ -1,7 +1,6 @@
 #ifndef __MAP_H
 #define __MAP_H
 
-#include "game.h"
 #include <Basics.h>
 
 typedef enum
@@ -23,6 +22,8 @@ typedef struct
 } Map;
 
 void MakeInBounds(const Map *, int *, int *);
+double GetXInBounds(double width, double x);
+double GetYInBounds(double height, double y);
 
 Point GetNearestNB(const Map *map, int x, int y, Point helper);
 

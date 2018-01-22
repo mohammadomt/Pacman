@@ -18,6 +18,26 @@ void MakeInBounds(const Map *map, int *x, int *y)
         *y = *y % map->height;
 }
 
+double GetXInBounds(double width, double x)
+{
+    if (x < 0)
+        return x + width;
+    else if (x > width - 1)
+        return x - width;
+    else
+        return x;
+}
+
+double GetYInBounds(double height, double y)
+{
+    if (y < 0)
+        return y + height;
+    else if (y > height - 1)
+        return y - height;
+    else
+        return y;
+}
+
 Point DirToPt(Direction dir)
 {
     Point retVal;
@@ -109,6 +129,8 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY) //
 
 Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
 {
+    if(fromX==toX && fromY==toY)
+        return (Point){0,0};
     LinkedPoint *queue = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
     bool visited[MAP_MAX_SIZE][MAP_MAX_SIZE] = {false};
 
@@ -122,7 +144,6 @@ Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
     while (index < pointer)
     {
         Point current = queue[index++].current;
-
         visited[current.x][current.y] = true;
 
         for (int dir = 1; dir <= 4; dir++)
@@ -151,6 +172,7 @@ Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
     }
 
     free(queue);
+    fprintf(stderr,"%d, %d is unreachable index: %d from: %d, %d\n", toX, toY, index, fromX, fromY);
     return (Point) {-1, -1};
 }
 
