@@ -18,7 +18,7 @@ void MakeInBounds(const Map *map, int *x, int *y)
         *y = *y % map->height;
 }
 
-double GetXInBounds(double width, double x)
+double GetXInBounds(double width, double x) //Gives a x in (-1, width - 1]
 {
     if (x < 0)
         return x + width;
@@ -28,7 +28,7 @@ double GetXInBounds(double width, double x)
         return x;
 }
 
-double GetYInBounds(double height, double y)
+double GetYInBounds(double height, double y) //Gives a y in (-1, height - 1]
 {
     if (y < 0)
         return y + height;

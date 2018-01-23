@@ -600,6 +600,14 @@ SDL2_gfxPrimitives.h
 
 ../src/SDLHelper.h
 
+../src/input.h
+
+../src/physics.h
+game.h
+../src/game.h
+input.h
+../src/input.h
+
 /cygdrive/e/Programming/C/Pacman2/src/Graphics.c
 Graphics.h
 -
@@ -653,6 +661,34 @@ Basics.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/input.h
+
+/cygdrive/e/Programming/C/Pacman2/src/main.c
+stdio.h
+-
+SDLHelper.h
+-
+math.h
+-
+stdbool.h
+-
+SDL2_gfxPrimitives.h
+/cygdrive/e/Programming/C/Pacman2/src/SDL2_gfxPrimitives.h
+map.h
+/cygdrive/e/Programming/C/Pacman2/src/map.h
+game.h
+/cygdrive/e/Programming/C/Pacman2/src/game.h
+game.h
+-
+physics.h
+-
+input.h
+-
+map.h
+-
+Basics.h
+-
+Graphics.h
+-
 
 /cygdrive/e/Programming/C/Pacman2/src/map.c
 game.h

@@ -10,7 +10,7 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
 
     if (ghost->blue)
     {
-        fprintf(stderr, "%d: from: %d, %d to: %d, %d(blue)\n", ghost->type, from.x, from.y, to.x, to.y);
+        //fprintf(stderr, "%d: from: %d, %d to: %d, %d(blue)\n", ghost->type, from.x, from.y, ghost->startX, ghost->startY);
         return GetMoveDirTo(map, from, (Point) {ghost->startX, ghost->startY});
     }
     switch (ghost->type)
@@ -48,9 +48,6 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             int x = 2 * pivot.x - (int) blinky->x, y = 2 * pivot.y - (int) blinky->y;
             MakeInBounds(map, &x, &y);
             to = GetNearestNB(map, x, y, from);
-
-            fprintf(stderr, "INKY special log: pacman: %d, %d  blinky: %d, %d, target: %d, %d\n", pivot.x, pivot.y,
-                    (int) blinky->x, (int) blinky->y, to.x, to.y);
         }
             break;
         case CLYDE:
@@ -61,7 +58,7 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
 
             break;
     }
-    fprintf(stderr, "%d: from: %d, %d to: %d, %d\n", ghost->type, from.x, from.y, to.x, to.y);
+    //fprintf(stderr, "%d: from: %d, %d to: %d, %d\n", ghost->type, from.x, from.y, to.x, to.y);
     return GetMoveDirTo(map, from, to);
 
 }
