@@ -74,6 +74,13 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     FreeBlocksCount = outMap->height * outMap->width - blocksCount;
     FoundPaths = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
 
+//    for(int i =0;i<outMap->width;i++)
+//        for(int j=0;j<outMap->height;j++)
+//        {
+//            if(outMap->cells[i][j]!=CELL_BLOCK)
+//                FindPathNext(outMap,0,0,i,j);
+//        }
+
 }
 
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
@@ -131,6 +138,7 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
         outPacman->x = outPacman->startX;
         outPacman->y = outPacman->startY;
         outPacman->health--;
+        outPacman->dir = DIR_NONE;
     }
 }
 
@@ -148,5 +156,5 @@ void checkGhostState(Ghost *ghost)
     if (ghost->blueCounterDown <= 0)
         ghost->blue = false;
     else
-        ghost->blueCounterDown -= (double) 1 / CYCLES_PER_SEC;
+        ghost->blueCounterDown -= 1;
 }
