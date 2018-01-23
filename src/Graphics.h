@@ -8,6 +8,7 @@
 #include "SDL2_gfxPrimitives.h"
 
 #define CellSize 60
+#define BlockRadius (CellSize/5)
 
 #define BlockColor 0xFF7A6E54
 #define CheeseColor 0xFF00D6FF
@@ -20,9 +21,11 @@
 #define GhostBlueColor 0xFFA1470D
 
 #define GhostLegCount 4
-#define GhostLegHeight CellSize / 10
-#define GhostEyeSize CellSize/10
-#define GhostPupilSize GhostEyeSize/2
+#define GhostLegHeight (CellSize / 10)
+#define GhostEyeSize (CellSize/10)
+#define GhostPupilSize (GhostEyeSize/2)
 
-#define RCoordinate(x) (x) * CellSize
+#define RCoordinate(x) ((x) * CellSize)
+
+void roundedBoxX(SDL_Renderer *rndr, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 radius, int corners, Uint32 color);
 #endif //PACMAN_GRAPHICS_H

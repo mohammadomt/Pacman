@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Pacman", 100, 100, map.width * CellSize, map.height * CellSize,
+    SDL_Window *window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          map.width * CellSize, map.height * CellSize,
                                           SDL_WINDOW_OPENGL);
     if (window == NULL)
     {
@@ -111,7 +112,6 @@ int main(int argc, char *argv[])
         DrawMap(&map, rndr);
 
         //SDL_RenderCopy(rndr, t, NULL, &dst);
-
 
         if (DToNextX(player.x, player.dir) < pacmanStep && DToNextY(player.y, player.dir) < pacmanStep)
         {
@@ -182,6 +182,18 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void DrawBlock(SDL_Renderer *rndr, const Map *map, int i, int j)
+{
+    int corners = 0;
+    corners |= 0b0001 * (/*i > 0 && j > 0 &&*/ map->cells[i - 1][j] != CELL_BLOCK && map->cells[i][j - 1] != CELL_BLOCK);
+    corners |= 0b0010 * (/*i < map->width - 1 && j > 0 &&*/ map->cells[i + 1][j] != CELL_BLOCK && map->cells[i][j - 1] != CELL_BLOCK);
+    corners |= 0b0100 * (/*i < map->width - 1 && j < map->height - 1 &&*/ map->cells[i + 1][j] != CELL_BLOCK && map->cells[i][j + 1] != CELL_BLOCK);
+    corners |= 0b1000 * (/*i > 0 && j < map->height - 1 &&*/ map->cells[i - 1][j] != CELL_BLOCK && map->cells[i][j + 1] != CELL_BLOCK);
+
+    roundedBoxX(rndr, RCoordinate(i), RCoordinate(j), RCoordinate(i) + CellSize, RCoordinate(j) + CellSize, BlockRadius,
+                corners, BlockColor);
+}
+
 void DrawMap(const Map *map, SDL_Renderer *rndr)
 {
     for (int i = 0; i < map->width; i++)
@@ -191,7 +203,7 @@ void DrawMap(const Map *map, SDL_Renderer *rndr)
             switch (map->cells[i][j])
             {
                 case CELL_BLOCK:
-                    boxColor(rndr, x, y, x + CellSize, y + CellSize, BlockColor);
+                    DrawBlock(rndr, map, i, j);
                     break;
                 case CELL_CHEESE:
                     filledCircleColor(rndr, x + CellSize / 2, y + CellSize / 2, CellSize / 10, CheeseColor);
@@ -253,8 +265,10 @@ void DrawGhostChar(SDL_Renderer *rndr, Direction dir, Sint16 x, Sint16 y, Uint32
     Point ptDir = DirToPt(dir);
     filledCircleColor(rndr, x + CellSize / 3, y + CellSize / 2, GhostEyeSize, 0xFFFFFFFF);
     filledCircleColor(rndr, x + CellSize * 2 / 3, y + CellSize / 2, GhostEyeSize, 0xFFFFFFFF);
-    filledCircleColor(rndr, x + CellSize / 3 + ptDir.x*GhostPupilSize, y + CellSize / 2+ ptDir.y*GhostPupilSize, GhostPupilSize, 0xFF000000);
-    filledCircleColor(rndr, x + CellSize * 2 / 3+ ptDir.x*GhostPupilSize, y + CellSize / 2+ ptDir.y*GhostPupilSize, GhostPupilSize, 0xFF000000);
+    filledCircleColor(rndr, x + CellSize / 3 + ptDir.x * GhostPupilSize, y + CellSize / 2 + ptDir.y * GhostPupilSize,
+                      GhostPupilSize, 0xFF000000);
+    filledCircleColor(rndr, x + CellSize * 2 / 3 + ptDir.x * GhostPupilSize,
+                      y + CellSize / 2 + ptDir.y * GhostPupilSize, GhostPupilSize, 0xFF000000);
 }
 
 void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr)
@@ -278,7 +292,7 @@ void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr)
                 color = InkyColor;
                 break;
         }
-    
+
     if (ghost->x < 0 || ghost->y < 0 || ghost->x > map->width - 1 || ghost->y > map->height - 1)
         DrawGhostChar(rndr, ghost->dir, RCoordinate(GetXInBounds(map->width, ghost->x)),
                       RCoordinate(GetYInBounds(map->height, ghost->y)),
