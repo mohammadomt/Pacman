@@ -590,6 +590,14 @@ close_code.h
 
 ../sdl/sdl2-include/close_code.h
 
+../sdl/sdl2-ttf-include/SDL_ttf.h
+SDL.h
+../sdl/sdl2-ttf-include/SDL.h
+begin_code.h
+../sdl/sdl2-ttf-include/begin_code.h
+close_code.h
+../sdl/sdl2-ttf-include/close_code.h
+
 ../src/Basics.h
 stdbool.h
 -
@@ -673,6 +681,8 @@ stdbool.h
 -
 SDL2_gfxPrimitives.h
 /cygdrive/e/Programming/C/Pacman2/src/SDL2_gfxPrimitives.h
+SDL.h
+/cygdrive/e/Programming/C/Pacman2/src/SDL.h
 map.h
 /cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h
@@ -688,6 +698,10 @@ map.h
 Basics.h
 -
 Graphics.h
+-
+SDL_ttf.h
+-
+string.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/map.c

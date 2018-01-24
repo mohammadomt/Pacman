@@ -116,6 +116,7 @@ CMakeFiles/Pacman.dir/src/main.c.o
  ../sdl/sdl2-include/SDL_video.h
  ../sdl/sdl2-include/begin_code.h
  ../sdl/sdl2-include/close_code.h
+ ../sdl/sdl2-ttf-include/SDL_ttf.h
  ../src/Basics.h
  ../src/Graphics.h
  ../src/SDLHelper.h

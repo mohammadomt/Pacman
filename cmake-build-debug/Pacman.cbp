@@ -47,6 +47,7 @@
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/src"/>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-gfx-include"/>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-include"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-ttf-include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include"/>
 					<Add directory="/usr/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
@@ -71,6 +72,7 @@
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/src"/>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-gfx-include"/>
 					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-include"/>
+					<Add directory="/cygdrive/e/Programming/C/Pacman2/sdl/sdl2-ttf-include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include"/>
 					<Add directory="/usr/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>

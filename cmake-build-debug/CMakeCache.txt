@@ -190,6 +190,39 @@ ProcessorCount_cmd_getconf:FILEPATH=/usr/bin/getconf.exe
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=ProcessorCount_cmd_sysctl-NOTFOUND
 
+//Path to a library.
+SDL2_TTF:FILEPATH=SDL2_TTF-NOTFOUND
+
+//Path to a file.
+SDL2_TTF_INCLUDE_DIR:PATH=/usr/include/SDL2
+
+//Path to a library.
+SDL2_TTF_LIBRARY:FILEPATH=/usr/lib/libSDL2_ttf.dll.a
+
+//Dependencies for target
+SDL2_TTF_LIB_DEPENDS:STATIC=
+
+//Path to a library.
+SDLMAIN_LIBRARY:FILEPATH=/usr/lib/libSDLmain.a
+
+//Path to a file.
+SDL_INCLUDE_DIR:PATH=/usr/include/SDL
+
+//Where the SDL Library can be found
+SDL_LIBRARY:STRING=/usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a
+
+//Dependencies for target
+SDL_LIB_DEPENDS:STATIC=
+
+//Path to a file.
+SDL_TTF_INCLUDE_DIR:PATH=/usr/include/SDL
+
+//Path to a library.
+SDL_TTF_LIBRARY:FILEPATH=/usr/lib/libSDL_ttf.dll.a
+
+//The directory containing a CMake configuration file for SDdgrgrL_tgrtxgfxf.
+SDdgrgrL_tgrtxgfxf_DIR:PATH=SDdgrgrL_tgrtxgfxf_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries
@@ -267,6 +300,10 @@ CMAKE_GENERATOR:INTERNAL=Unix Makefiles
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Have symbol pthread_create
+CMAKE_HAVE_LIBC_CREATE:INTERNAL=1
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/cygdrive/e/Programming/C/Pacman2
@@ -331,8 +368,21 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname.exe
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding SDL
+FIND_PACKAGE_MESSAGE_DETAILS_SDL:INTERNAL=[/usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a][/usr/include/SDL][v1.2.15()]
+//Details about finding SDL2_ttf
+FIND_PACKAGE_MESSAGE_DETAILS_SDL2_ttf:INTERNAL=[/usr/lib/libSDL2_ttf.dll.a][/usr/include/SDL2][v2.0.12()]
+//Details about finding SDL_ttf
+FIND_PACKAGE_MESSAGE_DETAILS_SDL_ttf:INTERNAL=[/usr/lib/libSDL_ttf.dll.a][/usr/include/SDL][v2.0.11()]
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: ProcessorCount_cmd_getconf
 ProcessorCount_cmd_getconf-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ProcessorCount_cmd_sysctl
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
+SDL_LIBRARY_TEMP:INTERNAL=/usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a
+//ADVANCED property for variable: SDL_TTF_INCLUDE_DIR
+SDL_TTF_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL_TTF_LIBRARY
+SDL_TTF_LIBRARY-ADVANCED:INTERNAL=1
 

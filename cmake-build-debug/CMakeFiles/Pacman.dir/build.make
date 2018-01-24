@@ -301,6 +301,7 @@ Pacman.exe: CMakeFiles/Pacman.dir/build.make
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-lib/libSDL2.a
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-lib/libSDL2main.a
 Pacman.exe: E:/Programming/C/Pacman2/sdl/sdl2-gfx-lib/libsdl-gfx.a
+Pacman.exe: /usr/lib/libSDL2_ttf.dll.a
 Pacman.exe: CMakeFiles/Pacman.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C executable Pacman.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Pacman.dir/link.txt --verbose=$(VERBOSE)

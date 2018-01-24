@@ -595,3 +595,45 @@ make[1]: Leaving directory '/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/
     Feature record: CXX_FEATURE:0cxx_variable_templates
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make.exe" "cmTC_d9099/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d9099.dir/build.make CMakeFiles/cmTC_d9099.dir/build
+make[1]: Entering directory '/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d9099.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_d9099.dir/CheckIncludeFile.c.o   -c /cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d9099.exe
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_d9099.dir/link.txt --verbose=1
+/usr/bin/cc     -Wl,--enable-auto-import  CMakeFiles/cmTC_d9099.dir/CheckIncludeFile.c.o  -o cmTC_d9099.exe -Wl,--out-implib,libcmTC_d9099.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+Determining if the pthread_create exist passed with the following output:
+Change Dir: /cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make.exe" "cmTC_51bd0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_51bd0.dir/build.make CMakeFiles/cmTC_51bd0.dir/build
+make[1]: Entering directory '/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51bd0.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_51bd0.dir/CheckSymbolExists.c.o   -c /cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_51bd0.exe
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_51bd0.dir/link.txt --verbose=1
+/usr/bin/cc     -Wl,--enable-auto-import  CMakeFiles/cmTC_51bd0.dir/CheckSymbolExists.c.o  -o cmTC_51bd0.exe -Wl,--out-implib,libcmTC_51bd0.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+File /cygdrive/e/Programming/C/Pacman2/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

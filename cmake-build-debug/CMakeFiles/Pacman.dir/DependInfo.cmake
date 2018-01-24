@@ -21,6 +21,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../src"
   "../sdl/sdl2-gfx-include"
   "../sdl/sdl2-include"
+  "../sdl/sdl2-ttf-include"
   )
 
 # Targets to which this target links.

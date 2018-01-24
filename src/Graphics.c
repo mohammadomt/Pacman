@@ -2,7 +2,6 @@
 // Created by Mohammad on 1/22/2018.
 //
 #include <Graphics.h>
-#include "SDL2_gfxPrimitives.h"
 
 void
 roundedBoxX(SDL_Renderer *rndr, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 radius, int corners, Uint32 color)
