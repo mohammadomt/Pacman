@@ -619,8 +619,6 @@ input.h
 /cygdrive/e/Programming/C/Pacman2/src/Graphics.c
 Graphics.h
 -
-SDL2_gfxPrimitives.h
-/cygdrive/e/Programming/C/Pacman2/src/SDL2_gfxPrimitives.h
 
 /cygdrive/e/Programming/C/Pacman2/src/Point.c
 Basics.h
@@ -681,8 +679,6 @@ stdbool.h
 -
 SDL2_gfxPrimitives.h
 /cygdrive/e/Programming/C/Pacman2/src/SDL2_gfxPrimitives.h
-SDL.h
-/cygdrive/e/Programming/C/Pacman2/src/SDL.h
 map.h
 /cygdrive/e/Programming/C/Pacman2/src/map.h
 game.h

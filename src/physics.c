@@ -8,7 +8,7 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
 {
     Point from = {(int) ghost->x, (int) ghost->y}, to;
 
-    if (ghost->blue)
+    if (ghost->blue || ghost->state == SCATTER)
     {
         //fprintf(stderr, "%d: from: %d, %d to: %d, %d(blue)\n", ghost->type, from.x, from.y, ghost->startX, ghost->startY);
         return GetMoveDirTo(map, from, (Point) {ghost->startX, ghost->startY});

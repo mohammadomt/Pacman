@@ -36,8 +36,10 @@ typedef struct {
     double speed;
 } Pacman;
 
-#define CYCLES_PER_SEC 60
+#define CYCLES_PER_SEC 45
 #define BLUE_DURATION 5*CYCLES_PER_SEC
+#define ChaseDuration 20 * CYCLES_PER_SEC
+#define ScatterDuration 5 * CYCLES_PER_SEC
 typedef enum
 {
     CHASE = 1,
@@ -76,12 +78,6 @@ void checkGhostState(Ghost *ghost);
 Point DirToPt(Direction dir);
 
 Direction PtToDir(Point pt);
-
-int GetDirSign(Direction);
-
-bool IsVertical(Direction);
-
-bool IsHorizontal(Direction);
 
 void GetPacmanCCell(Pacman *, int *, int *);
 

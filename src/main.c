@@ -24,6 +24,10 @@
 
 const int timeDelta = 1000 / CYCLES_PER_SEC;
 
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font);
+
+void DrawBlocks(SDL_Renderer *rndr, const Map *map);
+
 void DrawMap(const Map *map, SDL_Renderer *rndr);
 
 void DrawPacman(Pacman *pacman, Direction dir, Map *map, SDL_Renderer *rndr);
@@ -31,14 +35,16 @@ void DrawPacman(Pacman *pacman, Direction dir, Map *map, SDL_Renderer *rndr);
 void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr);
 
 SDL_Texture *DrawText(SDL_Renderer *rndr, TTF_Font *font, char *text);
+
 SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score);
 
 inline double DToNextX(double x, Direction dir);
 
 double DToNextY(double y, Direction dir);
 
-int MapWidth, MapHeight;
+int MapWidth, MapHeight, WindowWidth, WindowHeight;
 
+SDL_Texture *tCherry = NULL;
 
 int main(int argc, char *argv[])
 {
@@ -55,62 +61,54 @@ int main(int argc, char *argv[])
 
     MapWidth = map.width * CellSize;
     MapHeight = map.height * CellSize;
-    int WindowsWidth = map.width * CellSize + 2 * MapPadding, WindowHeight =
-            map.height * CellSize + 2 * MapPadding + TitlebarHeight;
+    WindowWidth = MapWidth + 2 * MapPadding;
+    WindowHeight = MapHeight + 2 * MapPadding + TitlebarHeight;
 
-    if (SDL_Init(SDL_INIT_VIDEO))
-    {
-        printf("SDL_Init Error: %s", SDL_GetError());
-        return 1;
-    }
 
-    SDL_Window *window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                          WindowsWidth, WindowHeight, SDL_WINDOW_OPENGL);
-    if (window == NULL)
+    SDL_Window *window;
+    SDL_Renderer *rndr;
+    TTF_Font *font;
+    if (Init(&window, &rndr, &font) != 0)
     {
-        printf("SDL_CreateWindow Error: %s", SDL_GetError());
         SDL_Quit();
-        return 2;
+        return 0;
     }
 
-    SDL_Renderer *rndr = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (rndr == NULL)
-    {
-        SDL_DestroyWindow(window);
-        printf("SDL_CreateRenderer Error: %s", SDL_GetError());
-        SDL_Quit();
-        return 3;
-    }
 
-    if (!TTF_Init() < 0)
-    {
-        printf("SDL TTF_Init Error: %s", TTF_GetError());
-        SDL_Quit();
-        return 4;
-    }
-
-    TTF_Font *font = TTF_OpenFont("res\\arial.ttf", DefFontSize);
-    SDL_Color colText = {255, 255, 255};
-
-    SDL_Rect dstMap = {MapPadding, 2*MapPadding +TitlebarHeight, MapWidth, MapHeight};
-    SDL_Texture *tMap = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dstMap.w, dstMap.h);
-
+    //region Prerendered Textures
     SDL_Rect dstTitlebar = {MapPadding, MapPadding, MapWidth, MapHeight};
     SDL_Texture *tTitlebar = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dstTitlebar.w,
                                                dstTitlebar.h);
-    SDL_Texture *tScore = NULL;
-    tScore = DrawScore(rndr, tScore,font, game.score);
-    SDL_Rect dstText = {0, MapPadding, 0, 0};
-    SDL_QueryTexture(tScore, NULL, NULL, &dstText.w, &dstText.h);
-    dstText.x = (MapWidth - dstText.w)/2+ MapPadding;
+
+    SDL_Texture *tScore = DrawScore(rndr, font, game.score);
+    SDL_Rect dstScore = {0, MapPadding, 0, 0};
+    SDL_QueryTexture(tScore, NULL, NULL, &dstScore.w, &dstScore.h);
+    dstScore.x = (MapWidth - dstScore.w) / 2 + MapPadding;
+
+    SDL_Texture *tEscape = DrawText(rndr, font, "menu: Esc");
+    SDL_Rect dstEscape = {0, MapPadding, 0, 0};
+    SDL_QueryTexture(tEscape, NULL, NULL, &dstEscape.w, &dstEscape.h);
+    dstEscape.x = (MapWidth - dstEscape.w) + MapPadding;
+
+    SDL_Rect dstMap = {MapPadding, 2 * MapPadding + TitlebarHeight, MapWidth, MapHeight};
+    SDL_Texture *tMap = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dstMap.w, dstMap.h);
+
+    SDL_Texture *tBlocks = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dstMap.w,
+                                             dstMap.h);
+    SDL_SetRenderTarget(rndr, tBlocks);
+    DrawBlocks(rndr, &map);
+    SDL_SetRenderTarget(rndr, NULL);
+    //endregion
 
     SDL_Event e;
     bool quit = false, paused = false;
     Action arrow = 0;
     Direction lPacmanDir = DIR_NONE; //Shows correct dir for pacman in stops against blocks
-    int lastScore = game.score;
+    int lastScore = game.score; //Check it if we should update score texture.
+
     while (!quit && !isGameFinished(&game, &player))
     {
+        ///region Key Input
         if (SDL_PollEvent(&e))
         {
             if (e.type == SDL_QUIT)
@@ -140,12 +138,14 @@ int main(int argc, char *argv[])
                         if (paused)
                         {
                             //TODO: Repair size
-                            boxColor(rndr, 0, 0, MapWidth, MapHeight, 0xD0000000);
+                            boxColor(rndr, 0, 0, WindowWidth, WindowHeight, 0xD0000000);
                         }
                         break;
                 }
             }
         }
+        ///endregion
+
         if (paused)
         {
             SDL_RenderPresent(rndr);
@@ -156,26 +156,29 @@ int main(int argc, char *argv[])
         SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
         SDL_RenderClear(rndr);
 
-        if(lastScore!=game.score)
+        if (lastScore != game.score)
         {
             SDL_DestroyTexture(tScore);
-            tScore = DrawScore(rndr, tScore, font, game.score);
+            tScore = DrawScore(rndr, font, game.score);
             lastScore = game.score;
         }
 
+        //region Titlebar
         SDL_SetRenderTarget(rndr, tTitlebar);
         SDL_RenderClear(rndr);
-        for (int i = 0; i < player.health; i++)
+        for (Sint16 i = 0; i < player.health; i++)
             filledPieColor(rndr, PacmanLifeSize / 2 + i * PacmanLifeSize, PacmanLifeSize / 2,
                            PacmanLifeSize / 2, 45, 315, PacmanColor);
+        //endregion
 
         SDL_SetRenderTarget(rndr, tMap);
-
         SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
         SDL_RenderClear(rndr);
 
+        SDL_RenderCopy(rndr, tBlocks, NULL, NULL);
         DrawMap(&map, rndr);
 
+        //region Pacman
         if (DToNextX(player.x, player.dir) < pacmanStep && DToNextY(player.y, player.dir) < pacmanStep)
         {
             player.x = (int) player.x + (player.dir == DIR_RIGHT ? 1 : 0);
@@ -202,8 +205,9 @@ int main(int argc, char *argv[])
         player.y += ptDir.y * pacmanStep;
 
         DrawPacman(&player, lPacmanDir, &map, rndr);
+        //endregion
 
-
+        ///region Ghosts
         for (int i = 0; i < MAX_GHOST_COUNT; i++)
         {
             Ghost *g = ghosts + i;
@@ -234,44 +238,96 @@ int main(int argc, char *argv[])
 
             DrawGhost(g, &map, rndr);
         }
-
+        ///endregion
 
         SDL_SetRenderTarget(rndr, NULL);
 
-
         SDL_RenderCopy(rndr, tTitlebar, NULL, &dstTitlebar);
-        SDL_RenderCopy(rndr, tScore, NULL, &dstText);
+        SDL_RenderCopy(rndr, tScore, NULL, &dstScore);
+        SDL_RenderCopy(rndr, tEscape, NULL, &dstEscape);
         SDL_RenderCopy(rndr, tMap, NULL, &dstMap);
-
 
         SDL_RenderPresent(rndr);
         SDL_Delay(timeDelta);
     }
 
+    //region Destroys
     SDL_DestroyTexture(tTitlebar);
+    SDL_DestroyTexture(tScore);
+    SDL_DestroyTexture(tEscape);
     SDL_DestroyTexture(tMap);
+    SDL_DestroyTexture(tBlocks);
 
     SDL_DestroyRenderer(rndr);
     SDL_DestroyWindow(window);
+    //endregion
+
     SDL_Quit();
     TTF_Quit();
     return 0;
 }
 
-void DrawBlock(SDL_Renderer *rndr, const Map *map, int i, int j)
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font)
 {
-    int corners = 0;
-    corners |=
-            0b0001 * (/*i > 0 && j > 0 &&*/ map->cells[i - 1][j] != CELL_BLOCK && map->cells[i][j - 1] != CELL_BLOCK);
-    corners |= 0b0010 * (/*i < map->width - 1 && j > 0 &&*/ map->cells[i + 1][j] != CELL_BLOCK &&
-                                                            map->cells[i][j - 1] != CELL_BLOCK);
-    corners |= 0b0100 * (/*i < map->width - 1 && j < map->height - 1 &&*/ map->cells[i + 1][j] != CELL_BLOCK &&
-                                                                          map->cells[i][j + 1] != CELL_BLOCK);
-    corners |= 0b1000 * (/*i > 0 && j < map->height - 1 &&*/ map->cells[i - 1][j] != CELL_BLOCK &&
-                                                             map->cells[i][j + 1] != CELL_BLOCK);
+    if (SDL_Init(SDL_INIT_VIDEO))
+    {
+        printf("SDL_Init Error: %s", SDL_GetError());
+        return 1;
+    }
+    *window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                               WindowWidth, WindowHeight, SDL_WINDOW_OPENGL);
+    if (*window == NULL)
+    {
+        printf("SDL_CreateWindow Error: %s", SDL_GetError());
+        return 2;
+    }
 
-    roundedBoxX(rndr, RCoordinate(i), RCoordinate(j), RCoordinate(i) + CellSize, RCoordinate(j) + CellSize, BlockRadius,
-                corners, BlockColor);
+    *rndr = SDL_CreateRenderer(*window, 0, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (*rndr == NULL)
+    {
+        SDL_DestroyWindow(*window);
+        printf("SDL_CreateRenderer Error: %s", SDL_GetError());
+        return 3;
+    }
+
+    if (!TTF_Init() < 0)
+    {
+        printf("TTF_Init Error: %s", TTF_GetError());
+        return 4;
+    }
+
+    *font = TTF_OpenFont("res\\crackman2.ttf", DefFontSize);
+    if (*font == NULL)
+    {
+        printf("TTF_OpenFont Error: %s", TTF_GetError());
+        return 5;
+    }
+
+    return 0;
+}
+
+void DrawBlocks(SDL_Renderer *rndr, const Map *map)
+{
+    for (int i = 0; i < map->width; i++)
+        for (int j = 0; j < map->height; j++)
+            if (map->cells[i][j] == CELL_BLOCK)
+            {
+                int corners = 0;
+                corners |=
+                        0b0001 * (/*i > 0 && j > 0 &&*/ map->cells[i - 1][j] != CELL_BLOCK &&
+                                                        map->cells[i][j - 1] != CELL_BLOCK);
+                corners |= 0b0010 * (/*i < map->width - 1 && j > 0 &&*/ map->cells[i + 1][j] != CELL_BLOCK &&
+                                                                        map->cells[i][j - 1] != CELL_BLOCK);
+                corners |=
+                        0b0100 * (/*i < map->width - 1 && j < map->height - 1 &&*/ map->cells[i + 1][j] != CELL_BLOCK &&
+                                                                                   map->cells[i][j + 1] != CELL_BLOCK);
+                corners |= 0b1000 * (/*i > 0 && j < map->height - 1 &&*/ map->cells[i - 1][j] != CELL_BLOCK &&
+                                                                         map->cells[i][j + 1] != CELL_BLOCK);
+
+                roundedBoxX(rndr, RCoordinate(i), RCoordinate(j), RCoordinate(i) + CellSize, RCoordinate(j) + CellSize,
+                            BlockRadius,
+                            corners, BlockColor);
+            }
 }
 
 void DrawMap(const Map *map, SDL_Renderer *rndr)
@@ -282,17 +338,39 @@ void DrawMap(const Map *map, SDL_Renderer *rndr)
             int x = i * CellSize, y = j * CellSize;
             switch (map->cells[i][j])
             {
-                case CELL_BLOCK:
-                    DrawBlock(rndr, map, i, j);
-                    break;
                 case CELL_CHEESE:
-                    filledCircleColor(rndr, x + CellSize / 2, y + CellSize / 2, CellSize / 10, CheeseColor);
+                    filledCircleColor(rndr, x + CellSize / 2, y + CellSize / 2, CheeseSize, CheeseColor);
                     break;
                 case CELL_PINEAPPLE:
-                    filledCircleColor(rndr, x + CellSize / 2, y + CellSize / 2, CellSize / 5, PineappleColor);
+                    filledCircleColor(rndr, x + CellSize / 2, y + CellSize / 2, PineappleSize, PineappleColor);
                     break;
                 case CELL_CHERRY:
+                {
+                    if (tCherry == NULL)
+                    {
+                        SDL_Texture *tPre = SDL_GetRenderTarget(rndr);
+                        tCherry = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, CellSize,
+                                                    CellSize);
+                        SDL_SetRenderTarget(rndr, tCherry);
+                        Sint16 x1 = CellSize * 9 / 12, x2 = CellSize * 3 / 12,
+                                y1 = CellSize * 4 / 5, y2 = CellSize * 4 / 6;
+                        filledCircleColor(rndr, x1, y1, CherrySize, CherryColor);
+                        filledCircleColor(rndr, x2, y2, CherrySize, CherryColor);
+                        Sint16 xs1[] = {CellSize / 2, CellSize / 2, x1, x1};
+                        Sint16 ys1[] = {DefPadding, CellSize / 2 - CherrySize, CellSize / 2,
+                                        y1 - CherrySize};
+                        bezierColor(rndr, xs1, ys1, 4, 10, BranchColor);
+                        Sint16 xs2[] = {CellSize / 2, CellSize / 2, x2, x2};
+                        Sint16 ys2[] = {DefPadding, CellSize / 2 - CherrySize, CellSize / 2,
+                                        y2 - CherrySize};
+                        bezierColor(rndr, xs2, ys2, 4, 2, BranchColor);
 
+                        SDL_SetRenderTarget(rndr, tPre);
+                    }
+
+                    SDL_Rect dst = {x, y, CellSize, CellSize};
+                    SDL_RenderCopy(rndr, tCherry, NULL, &dst);
+                }
                     break;
             }
         }
@@ -371,11 +449,11 @@ void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr)
 
 SDL_Texture *DrawText(SDL_Renderer *rndr, TTF_Font *font, char *text)
 {
-    SDL_Surface *sText = TTF_RenderText_Shaded(font, text, (SDL_Color) {255, 255, 255}, (SDL_Color){0,0,0,255});
+    SDL_Surface *sText = TTF_RenderText_Solid(font, text, (SDL_Color) {255, 255, 255});
     return SDL_CreateTextureFromSurface(rndr, sText);
 }
 
-SDL_Texture* DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score)
+SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score)
 {
     char strScore[20];
     sprintf(strScore, "Score: %4d", score);

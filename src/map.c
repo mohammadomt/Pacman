@@ -129,8 +129,22 @@ LinkedPoint *FindPath(const Map *map, int fromX, int fromY, int toX, int toY) //
 
 Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
 {
-    if(fromX==toX && fromY==toY)
-        return (Point){0,0};
+    if (fromX == toX && fromY == toY)
+    {
+        fprintf(stderr, "from and to are equal\n");
+        return (Point) {0, 0};
+    }
+    if (map->cells[fromX][fromY] == CELL_BLOCK)
+    {
+        fprintf(stderr, "In a Block!\n");
+        return (Point) {0, 0};
+    }
+    if (map->cells[toX][toY] == CELL_BLOCK)
+    {
+        fprintf(stderr, "Going into a Block!\n");
+        return (Point) {0, 0};
+    }
+
     LinkedPoint *queue = (LinkedPoint *) malloc(FreeBlocksCount * FreeBlocksCount * sizeof(LinkedPoint));
     bool visited[MAP_MAX_SIZE][MAP_MAX_SIZE] = {false};
 
@@ -172,7 +186,7 @@ Point FindPathNext(const Map *map, int fromX, int fromY, int toX, int toY)
     }
 
     free(queue);
-    fprintf(stderr,"%d, %d is unreachable index: %d from: %d, %d\n", toX, toY, index, fromX, fromY);
+    fprintf(stderr, "%d, %d is unreachable index: %d from: %d, %d\n", toX, toY, index, fromX, fromY);
     return (Point) {-1, -1};
 }
 

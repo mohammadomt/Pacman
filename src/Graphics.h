@@ -17,6 +17,12 @@
 #define BlockColor 0xFF7A6E54
 #define CheeseColor 0xFF00D6FF
 #define PineappleColor  0xFF07C1FF
+#define CherryColor 0xFF5053EF
+#define BranchColor 0xFF50AF4C
+
+#define CheeseSize (CellSize/10)
+#define PineappleSize (CellSize /4)
+#define CherrySize (CellSize / 5)
 
 #define BlinkyColor 0xFF3643F4
 #define PinkyColor 0xFF631EE9
@@ -35,7 +41,9 @@
 #define MapPadding BlockRadius
 #define DefPadding (CellSize / 10)
 
-#define DefFontSize 30
+#define DefFontSize 40
 
-void roundedBoxX(SDL_Renderer *rndr, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 radius, int corners, Uint32 color);
+void
+roundedBoxX(SDL_Renderer *rndr, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 radius, int corners, Uint32 color);
+
 #endif //PACMAN_GRAPHICS_H

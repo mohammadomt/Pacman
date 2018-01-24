@@ -65,6 +65,8 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
             fscanf(fs, " %lld", &outGhosts[i].blueCounterDown);
         outGhosts[i].blue = !mode;
         fscanf(fs, " (%d,%d) (%lf,%lf)", &outGhosts[i].startX, &outGhosts[i].startY, &outGhosts[i].x, &outGhosts[i].y);
+        outGhosts[i].state = CHASE;
+        outGhosts[i].stateCounterDown = ChaseDuration;
     }
 
     fclose(fs);
@@ -144,10 +146,16 @@ bool isGameFinished(Game *game, Pacman *pacman)
 
 void checkGhostState(Ghost *ghost)
 {
-    if (!ghost->blue)
-        return;
-    if (ghost->blueCounterDown <= 0)
+    if (ghost->blueCounterDown == 0)
         ghost->blue = false;
-    else
+    else if(ghost->blue)
         ghost->blueCounterDown -= 1;
+
+    if (ghost->stateCounterDown == 0)
+    {
+        ghost->state = ghost->state == CHASE ? SCATTER : CHASE;
+        fprintf(stdout, "Ghost state changed to: %d\n", ghost->state);
+        ghost->stateCounterDown = ghost->state == CHASE ? ChaseDuration : ScatterDuration;
+    } else
+        ghost->stateCounterDown--;
 }
