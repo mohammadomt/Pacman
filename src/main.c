@@ -8,7 +8,6 @@
 #include "SDL2_gfxPrimitives.h"
 #include "map.h"
 #include "game.h"
-#include <game.h>
 #include <physics.h>
 #include <input.h>
 #include <map.h>
@@ -24,7 +23,7 @@
 
 const int timeDelta = 1000 / CYCLES_PER_SEC;
 
-int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font);
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu);
 
 void DrawBlocks(SDL_Renderer *rndr, const Map *map);
 
@@ -41,6 +40,17 @@ SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score);
 inline double DToNextX(double x, Direction dir);
 
 double DToNextY(double y, Direction dir);
+
+
+typedef struct
+{
+    char items[5][20];
+    bool shownItems[5];
+    int hoverItem;
+    char title[20];
+    int itemCount;
+} Menu;
+
 
 int MapWidth, MapHeight, WindowWidth, WindowHeight;
 
@@ -68,7 +78,8 @@ int main(int argc, char *argv[])
     SDL_Window *window;
     SDL_Renderer *rndr;
     TTF_Font *font;
-    if (Init(&window, &rndr, &font) != 0)
+    TTF_Font *fontMenu;
+    if (Init(&window, &rndr, &font, &fontMenu) != 0)
     {
         SDL_Quit();
         return 0;
@@ -100,8 +111,25 @@ int main(int argc, char *argv[])
     SDL_SetRenderTarget(rndr, NULL);
     //endregion
 
+    //region Menu
+    Menu mnuMain;
+    mnuMain.hoverItem = 0;
+    strcpy(mnuMain.items[0], "Resume");
+    strcpy(mnuMain.items[1], "New Game");
+    strcpy(mnuMain.items[2], "Exit");
+    mnuMain.shownItems[0] = false;
+    mnuMain.shownItems[1] = true;
+    mnuMain.shownItems[2] = true;
+    mnuMain.itemCount = 3;
+    mnuMain.hoverItem = 1;
+    strcpy(mnuMain.title, "PACMAN");
+
+    SDL_Texture *tMenu = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WindowWidth,
+                                           WindowHeight);
+    //endregion
+
     SDL_Event e;
-    bool quit = false, paused = false;
+    bool quit = false, paused = true;
     Action arrow = 0;
     Direction lPacmanDir = DIR_NONE; //Shows correct dir for pacman in stops against blocks
     int lastScore = game.score; //Check it if we should update score texture.
@@ -127,18 +155,30 @@ int main(int argc, char *argv[])
                         arrow = ACTION_LEFT;
                         break;
                     case SDLK_UP:
-                        arrow = ACTION_UP;
+                        if (paused)
+                        {
+                            while (!mnuMain.shownItems[mnuMain.hoverItem = (mnuMain.hoverItem == 0 ? mnuMain.itemCount -
+                                                                                                     1 :
+                                                                            mnuMain.hoverItem - 1)]);
+                        } else
+                            arrow = ACTION_UP;
                         break;
                     case SDLK_DOWN:
-                        arrow = ACTION_DOWN;
+                        if (paused)
+                        {
+                            while (!mnuMain.shownItems[mnuMain.hoverItem = ((mnuMain.hoverItem + 1) %
+                                                                            mnuMain.itemCount)]);
+                        } else
+                            arrow = ACTION_DOWN;
                         break;
                     case SDLK_p:
                     case SDLK_ESCAPE:
                         paused = !paused;
                         if (paused)
                         {
-                            //TODO: Repair size
-                            boxColor(rndr, 0, 0, WindowWidth, WindowHeight, 0xD0000000);
+                            sprintf(mnuMain.title, "Score: %4d", game.score);
+                            mnuMain.shownItems[0] = true;
+                            mnuMain.hoverItem = 0;
                         }
                         break;
                 }
@@ -146,107 +186,110 @@ int main(int argc, char *argv[])
         }
         ///endregion
 
+        SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+        SDL_RenderClear(rndr);
+
         if (paused)
         {
-            SDL_RenderPresent(rndr);
-            SDL_Delay(timeDelta);
-            continue;
-        }
-
-        SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
-        SDL_RenderClear(rndr);
-
-        if (lastScore != game.score)
+            SDL_SetRenderTarget(rndr, tMenu);
+            SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+            SDL_RenderClear(rndr);
+            DrawMenu(rndr, fontMenu, &mnuMain, WindowWidth, WindowHeight);
+            SDL_SetRenderTarget(rndr, NULL);
+            SDL_RenderCopy(rndr, tMenu, NULL, NULL);
+        } else
         {
-            SDL_DestroyTexture(tScore);
-            tScore = DrawScore(rndr, font, game.score);
-            lastScore = game.score;
-        }
-
-        //region Titlebar
-        SDL_SetRenderTarget(rndr, tTitlebar);
-        SDL_RenderClear(rndr);
-        for (Sint16 i = 0; i < player.health; i++)
-            filledPieColor(rndr, PacmanLifeSize / 2 + i * PacmanLifeSize, PacmanLifeSize / 2,
-                           PacmanLifeSize / 2, 45, 315, PacmanColor);
-        //endregion
-
-        SDL_SetRenderTarget(rndr, tMap);
-        SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
-        SDL_RenderClear(rndr);
-
-        SDL_RenderCopy(rndr, tBlocks, NULL, NULL);
-        DrawMap(&map, rndr);
-
-        //region Pacman
-        if (DToNextX(player.x, player.dir) < pacmanStep && DToNextY(player.y, player.dir) < pacmanStep)
-        {
-            player.x = (int) player.x + (player.dir == DIR_RIGHT ? 1 : 0);
-            player.y = (int) player.y + (player.dir == DIR_DOWN ? 1 : 0);
-
-            if (player.x <= -1)
-                player.x += map.width;
-            if (player.y <= -1)
-                player.y += map.height;
-            if (player.x >= map.width)
-                player.x -= map.width;
-            if (player.y >= map.height)
-                player.y -= map.height;
-
-            player.dir = decidePacman(&map, &player, arrow);
-            if (player.dir != DIR_NONE)
-                lPacmanDir = player.dir;
-
-            checkEatables(&map, &game, &player, ghosts);
-        }
-
-        Point ptDir = DirToPt(player.dir);
-        player.x += ptDir.x * pacmanStep;
-        player.y += ptDir.y * pacmanStep;
-
-        DrawPacman(&player, lPacmanDir, &map, rndr);
-        //endregion
-
-        ///region Ghosts
-        for (int i = 0; i < MAX_GHOST_COUNT; i++)
-        {
-            Ghost *g = ghosts + i;
-
-            if (DToNextX(g->x, g->dir) < ghostStep && DToNextY(g->y, g->dir) < ghostStep)
+            if (lastScore != game.score)
             {
-                g->x = (int) g->x + (g->dir == DIR_RIGHT ? 1 : 0);
-                g->y = (int) g->y + (g->dir == DIR_DOWN ? 1 : 0);
-
-                if (g->x <= -1)
-                    g->x += map.width;
-                if (g->y <= -1)
-                    g->y += map.height;
-                if (g->x >= map.width)
-                    g->x -= map.width;
-                if (g->y >= map.height)
-                    g->y -= map.height;
-
-                g->dir = decideGhost(&map, g, &player, ghosts + 0);
+                SDL_DestroyTexture(tScore);
+                tScore = DrawScore(rndr, font, game.score);
+                lastScore = game.score;
             }
 
-            ptDir = DirToPt(g->dir);
-            g->x += ptDir.x * ghostStep;
-            g->y += ptDir.y * ghostStep;
+            //region Titlebar
+            SDL_SetRenderTarget(rndr, tTitlebar);
+            SDL_RenderClear(rndr);
+            for (Sint16 i = 0; i < player.health; i++)
+                filledPieColor(rndr, PacmanLifeSize / 2 + i * PacmanLifeSize, PacmanLifeSize / 2,
+                               PacmanLifeSize / 2, 45, 315, PacmanColor);
+            //endregion
 
-            checkGhostState(g);
-            checkGhostCollision(&player, g);
+            SDL_SetRenderTarget(rndr, tMap);
+            SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+            SDL_RenderClear(rndr);
 
-            DrawGhost(g, &map, rndr);
+            SDL_RenderCopy(rndr, tBlocks, NULL, NULL);
+            DrawMap(&map, rndr);
+
+            //region Pacman
+            if (DToNextX(player.x, player.dir) < pacmanStep && DToNextY(player.y, player.dir) < pacmanStep)
+            {
+                player.x = (int) player.x + (player.dir == DIR_RIGHT ? 1 : 0);
+                player.y = (int) player.y + (player.dir == DIR_DOWN ? 1 : 0);
+
+                if (player.x <= -1)
+                    player.x += map.width;
+                if (player.y <= -1)
+                    player.y += map.height;
+                if (player.x >= map.width)
+                    player.x -= map.width;
+                if (player.y >= map.height)
+                    player.y -= map.height;
+
+                player.dir = decidePacman(&map, &player, arrow);
+                if (player.dir != DIR_NONE)
+                    lPacmanDir = player.dir;
+
+                checkEatables(&map, &game, &player, ghosts);
+            }
+
+            Point ptDir = DirToPt(player.dir);
+            player.x += ptDir.x * pacmanStep;
+            player.y += ptDir.y * pacmanStep;
+
+            DrawPacman(&player, lPacmanDir, &map, rndr);
+            //endregion
+
+            ///region Ghosts
+            for (int i = 0; i < MAX_GHOST_COUNT; i++)
+            {
+                Ghost *g = ghosts + i;
+
+                if (DToNextX(g->x, g->dir) < ghostStep && DToNextY(g->y, g->dir) < ghostStep)
+                {
+                    g->x = (int) g->x + (g->dir == DIR_RIGHT ? 1 : 0);
+                    g->y = (int) g->y + (g->dir == DIR_DOWN ? 1 : 0);
+
+                    if (g->x <= -1)
+                        g->x += map.width;
+                    if (g->y <= -1)
+                        g->y += map.height;
+                    if (g->x >= map.width)
+                        g->x -= map.width;
+                    if (g->y >= map.height)
+                        g->y -= map.height;
+
+                    g->dir = decideGhost(&map, g, &player, ghosts + 0);
+                }
+
+                ptDir = DirToPt(g->dir);
+                g->x += ptDir.x * ghostStep;
+                g->y += ptDir.y * ghostStep;
+
+                checkGhostState(g);
+                checkGhostCollision(&player, g);
+
+                DrawGhost(g, &map, rndr);
+            }
+            ///endregion
+
+            SDL_SetRenderTarget(rndr, NULL);
+
+            SDL_RenderCopy(rndr, tTitlebar, NULL, &dstTitlebar);
+            SDL_RenderCopy(rndr, tScore, NULL, &dstScore);
+            SDL_RenderCopy(rndr, tEscape, NULL, &dstEscape);
+            SDL_RenderCopy(rndr, tMap, NULL, &dstMap);
         }
-        ///endregion
-
-        SDL_SetRenderTarget(rndr, NULL);
-
-        SDL_RenderCopy(rndr, tTitlebar, NULL, &dstTitlebar);
-        SDL_RenderCopy(rndr, tScore, NULL, &dstScore);
-        SDL_RenderCopy(rndr, tEscape, NULL, &dstEscape);
-        SDL_RenderCopy(rndr, tMap, NULL, &dstMap);
-
         SDL_RenderPresent(rndr);
         SDL_Delay(timeDelta);
     }
@@ -260,6 +303,9 @@ int main(int argc, char *argv[])
 
     SDL_DestroyRenderer(rndr);
     SDL_DestroyWindow(window);
+
+    TTF_CloseFont(font);
+    TTF_CloseFont(fontMenu);
     //endregion
 
     SDL_Quit();
@@ -267,7 +313,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font)
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu)
 {
     if (SDL_Init(SDL_INIT_VIDEO))
     {
@@ -298,6 +344,13 @@ int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font)
 
     *font = TTF_OpenFont("res\\crackman2.ttf", DefFontSize);
     if (*font == NULL)
+    {
+        printf("TTF_OpenFont Error: %s", TTF_GetError());
+        return 5;
+    }
+
+    *fontMenu = TTF_OpenFont("res\\crackman2.ttf", MenuFontSize);
+    if (*fontMenu == NULL)
     {
         printf("TTF_OpenFont Error: %s", TTF_GetError());
         return 5;
@@ -458,6 +511,47 @@ SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score)
     char strScore[20];
     sprintf(strScore, "Score: %4d", score);
     return DrawText(rndr, font, strScore);
+}
+
+void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, Menu *mnu, int w, int h)
+{
+    int counter = 0, i;
+    for (i = 0; i < mnu->itemCount; i++)
+        counter += mnu->shownItems[i];
+
+    SDL_Texture *t = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, MenuItemWidth,
+                                       (counter + 1) * (MenuItemHeight + MenuItemPadding));
+    SDL_Texture *tPre = SDL_GetRenderTarget(rndr);
+    SDL_SetRenderTarget(rndr, t);
+
+    SDL_Texture *tTitle = DrawText(rndr, font, mnu->title);
+    SDL_Rect dst = {0, 0, 0, 0};
+    SDL_QueryTexture(tTitle, NULL, NULL, &dst.w, &dst.h);
+    dst.x = (MenuItemWidth - dst.w) / 2;
+    SDL_RenderCopy(rndr, tTitle, NULL, &dst);
+    SDL_DestroyTexture(tTitle);
+
+    for (i = 0, counter = 0; i < mnu->itemCount; i++)
+    {
+        if (!mnu->shownItems[i])
+            continue;
+        SDL_Texture *tItem = DrawText(rndr, font, mnu->items[i]);
+        dst.y = (counter + 1) * (MenuItemHeight + MenuItemPadding);
+        SDL_QueryTexture(tItem, NULL, NULL, &dst.w, &dst.h);
+        dst.x = (MenuItemWidth - dst.w) / 2;
+        if (mnu->hoverItem == i)
+            boxColor(rndr, 0, dst.y, MenuItemWidth, dst.y + MenuItemHeight, ClydeColor);
+        dst.y += (MenuItemHeight - dst.h) / 2;
+        SDL_RenderCopy(rndr, tItem, NULL, &dst);
+        SDL_DestroyTexture(tItem);
+        counter++;
+    }
+
+    SDL_SetRenderTarget(rndr, tPre);
+    SDL_QueryTexture(t, NULL, NULL, &dst.w, &dst.h);
+    dst.x = (w - dst.w) / 2;
+    dst.y = (h - dst.h) / 2;
+    SDL_RenderCopy(rndr, t, NULL, &dst);
 }
 
 double DToNextX(double x, Direction dir) //Returns distance to next horizontal cell

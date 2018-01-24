@@ -20,7 +20,6 @@ Direction decideGhost(const Map *map, Ghost *ghost, Pacman *pacman, Ghost *blink
             break;
         case PINKY:
         {
-            //TODO: Get a log to check it
             int i;
             Point ptDir = DirToPt(pacman->dir);
             int x, y;
