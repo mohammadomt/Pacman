@@ -25,8 +25,10 @@ typedef enum { BLINKY, PINKY, CLYDE, INKY } GhostType;
 
 typedef struct {
     int score;
+    int highScore;
     int cheeses, cherries, pineapples;
     int ghosts;
+    unsigned int timeSeconds;
 } Game;
 
 typedef struct {
@@ -38,7 +40,7 @@ typedef struct {
 } Pacman;
 
 #define CYCLES_PER_SEC 45
-#define BLUE_DURATION 5*CYCLES_PER_SEC
+#define BLUE_DURATION 5 * CYCLES_PER_SEC
 #define ChaseDuration 20 * CYCLES_PER_SEC
 #define ScatterDuration 5 * CYCLES_PER_SEC
 typedef enum
@@ -71,7 +73,7 @@ void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
 void checkGhostCollision(Pacman *outPacman, Ghost *outGhost, Game *outGame);
 
 // TO WRITE
-bool isGameFinished(Game *game, Pacman *pacman);
+int isGameFinished(Game *game, Pacman *pacman);
 
 // TO WRITE
 void checkGhostState(Ghost *ghost);

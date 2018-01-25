@@ -39,14 +39,17 @@
 
 #define TitlebarHeight 30
 #define MapPadding BlockRadius
-#define DefPadding (CellSize / 10)
+#define CellPadding (CellSize / 10)
+#define DefPadding (CellSize / 5)
 
 #define MenuItemPadding 40
 #define MenuItemHeight 80
-#define MenuItemWidth 400
+#define MenuItemWidth 800
+#define MenuTitleHeight 80
 
 #define DefFontSize 40
 #define MenuFontSize 60
+#define MenuFontBigSize 80
 
 void
 roundedBoxX(SDL_Renderer *rndr, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 radius, int corners, Uint32 color);

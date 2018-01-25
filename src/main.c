@@ -20,10 +20,21 @@
 #undef main
 #endif
 
+typedef struct
+{
+    char items[5][20];
+    bool shownItems[5];
+    int hoverItem;
+    char title[40];
+    char subtitle[40];
+    char highScore[40];
+    bool showHighScore;
+    int itemCount;
+} Menu;
 
 const int timeDelta = 1000 / CYCLES_PER_SEC;
 
-int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu);
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu, TTF_Font **fontMenuBig);
 
 void DrawBlocks(SDL_Renderer *rndr, const Map *map);
 
@@ -37,19 +48,13 @@ SDL_Texture *DrawText(SDL_Renderer *rndr, TTF_Font *font, char *text);
 
 SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score);
 
+SDL_Texture *DrawTimer(SDL_Renderer *rndr, TTF_Font *font, unsigned int seconds);
+
+void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, TTF_Font *fontBig, Menu *mnu, int w, int h);
+
 inline double DToNextX(double x, Direction dir);
 
 double DToNextY(double y, Direction dir);
-
-
-typedef struct
-{
-    char items[5][20];
-    bool shownItems[5];
-    int hoverItem;
-    char title[20];
-    int itemCount;
-} Menu;
 
 
 int MapWidth, MapHeight, WindowWidth, WindowHeight;
@@ -63,7 +68,7 @@ int main(int argc, char *argv[])
     Pacman player;
     Ghost ghosts[MAX_GHOST_COUNT];
 
-    initiateGame("res\\simple.txt", &map, &game, &player, ghosts);
+    initiateGame("res\\map.txt", &map, &game, &player, ghosts);
 
     double pacmanStep = 1.0f / CYCLES_PER_SEC * player.speed;
     //TODO: change it for every ghosts
@@ -79,7 +84,8 @@ int main(int argc, char *argv[])
     SDL_Renderer *rndr;
     TTF_Font *font;
     TTF_Font *fontMenu;
-    if (Init(&window, &rndr, &font, &fontMenu) != 0)
+    TTF_Font *fontMenuBig;
+    if (Init(&window, &rndr, &font, &fontMenu, &fontMenuBig) != 0)
     {
         SDL_Quit();
         return 0;
@@ -109,6 +115,11 @@ int main(int argc, char *argv[])
     SDL_SetRenderTarget(rndr, tBlocks);
     DrawBlocks(rndr, &map);
     SDL_SetRenderTarget(rndr, NULL);
+
+    SDL_Rect dstTimer = {0, 0, 0, 0};
+    SDL_Texture *tTimer = DrawTimer(rndr, font, 0);
+    SDL_QueryTexture(tTimer, NULL, NULL, &dstTimer.w, &dstTimer.h);
+    dstTimer.x = dstEscape.x - dstTimer.w - 2 * DefPadding;
     //endregion
 
     //region Menu
@@ -123,6 +134,7 @@ int main(int argc, char *argv[])
     mnuMain.itemCount = 3;
     mnuMain.hoverItem = 1;
     strcpy(mnuMain.title, "PACMAN");
+    sprintf(mnuMain.highScore, "High Score: %4d", game.highScore);
 
     SDL_Texture *tMenu = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WindowWidth,
                                            WindowHeight);
@@ -134,8 +146,9 @@ int main(int argc, char *argv[])
     Action arrow = 0;
     Direction lPacmanDir = DIR_NONE; //Shows correct dir for pacman in stops against blocks
     int lastScore = game.score; //Check it if we should update score texture.
-
-    while (!quit && !isGameFinished(&game, &player))
+    int finishState = 0;
+    int cyclecounter = 0;
+    while (!quit)
     {
         ///region Key Input
         if (SDL_PollEvent(&e))
@@ -195,9 +208,12 @@ int main(int argc, char *argv[])
                                 paused = false;
                                 break;
                             case 1: //New Game
-                                if (mnuMain.shownItems[0]) //Check if game is started
-                                    initiateGame("res\\map.txt", &map, &game, &player, ghosts);
+                                //if (mnuMain.shownItems[0]) //Check if game is started
+                                initiateGame("res\\map.txt", &map, &game, &player, ghosts);
+                                mnuMain.subtitle[0] = '\0';
+                                mnuMain.showHighScore = false;
                                 paused = false;
+                                tTimer = DrawTimer(rndr, font, 0);
                                 break;
                             case 2: //Exit
                                 quit = true;
@@ -208,6 +224,33 @@ int main(int argc, char *argv[])
         }
         ///endregion
 
+        if (!paused && (finishState = isGameFinished(&game, &player)))
+        {
+            switch (finishState)
+            {
+                case 1:
+                    sprintf(mnuMain.title, "You Lose :(");
+                    sprintf(mnuMain.subtitle, "Score: %4d", game.score);
+                    break;
+                case 2:
+                    sprintf(mnuMain.title, "You Win :)");
+                    sprintf(mnuMain.subtitle, "Score: %4d", game.score);
+                    break;
+            }
+            if (game.score > game.highScore)
+            {
+                game.highScore = game.score;
+                sprintf(mnuMain.highScore, "New High Score: %4d", game.highScore);
+                FILE *fs = fopen("res\\highscore.txt", "w");
+                fprintf(fs, "%04d", game.highScore);
+                fclose(fs);
+            } else
+                sprintf(mnuMain.highScore, "High Score: %4d", game.highScore);
+            mnuMain.showHighScore = true;
+            paused = true;
+            updateMenu = true;
+            mnuMain.shownItems[0] = false;
+        }
         if (paused)
         {
             if (updateMenu)
@@ -218,12 +261,13 @@ int main(int argc, char *argv[])
                 SDL_SetRenderTarget(rndr, tMenu);
                 SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
                 SDL_RenderClear(rndr);
-                DrawMenu(rndr, fontMenu, &mnuMain, WindowWidth, WindowHeight);
+                DrawMenu(rndr, fontMenu, fontMenuBig, &mnuMain, WindowWidth, WindowHeight);
                 SDL_SetRenderTarget(rndr, NULL);
                 SDL_RenderCopy(rndr, tMenu, NULL, NULL);
 
                 updateMenu = false;
             }
+
         } else
         {
             SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
@@ -242,6 +286,17 @@ int main(int argc, char *argv[])
             for (Sint16 i = 0; i < player.health; i++)
                 filledPieColor(rndr, PacmanLifeSize / 2 + i * PacmanLifeSize, PacmanLifeSize / 2,
                                PacmanLifeSize / 2, 45, 315, PacmanColor);
+            if (cyclecounter >= CYCLES_PER_SEC)
+            {
+                cyclecounter = 0;
+                game.timeSeconds++;
+                SDL_DestroyTexture(tTimer);
+                tTimer = DrawTimer(rndr, font, game.timeSeconds);
+            } else
+                cyclecounter++;
+
+            SDL_RenderCopy(rndr, tTimer, NULL, &dstTimer);
+
             //endregion
 
             SDL_SetRenderTarget(rndr, tMap);
@@ -330,6 +385,7 @@ int main(int argc, char *argv[])
     SDL_DestroyTexture(tEscape);
     SDL_DestroyTexture(tMap);
     SDL_DestroyTexture(tBlocks);
+    SDL_DestroyTexture(tMenu);
 
     SDL_DestroyRenderer(rndr);
     SDL_DestroyWindow(window);
@@ -340,10 +396,11 @@ int main(int argc, char *argv[])
 
     SDL_Quit();
     TTF_Quit();
+
     return 0;
 }
 
-int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu)
+int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **fontMenu, TTF_Font **fontMenuBig)
 {
     if (SDL_Init(SDL_INIT_VIDEO))
     {
@@ -384,6 +441,13 @@ int Init(SDL_Window **window, SDL_Renderer **rndr, TTF_Font **font, TTF_Font **f
     {
         printf("TTF_OpenFont Error: %s", TTF_GetError());
         return 5;
+    }
+
+    *fontMenuBig = TTF_OpenFont("res\\crackman2.ttf", MenuFontBigSize);
+    if (*fontMenuBig == NULL)
+    {
+        printf("TTF_OpenFont Error: %s", TTF_GetError());
+        return 6;
     }
 
     return 0;
@@ -440,11 +504,11 @@ void DrawMap(const Map *map, SDL_Renderer *rndr)
                         filledCircleColor(rndr, x1, y1, CherrySize, CherryColor);
                         filledCircleColor(rndr, x2, y2, CherrySize, CherryColor);
                         Sint16 xs1[] = {CellSize / 2, CellSize / 2, x1, x1};
-                        Sint16 ys1[] = {DefPadding, CellSize / 2 - CherrySize, CellSize / 2,
+                        Sint16 ys1[] = {CellPadding, CellSize / 2 - CherrySize, CellSize / 2,
                                         y1 - CherrySize};
                         bezierColor(rndr, xs1, ys1, 4, 10, BranchColor);
                         Sint16 xs2[] = {CellSize / 2, CellSize / 2, x2, x2};
-                        Sint16 ys2[] = {DefPadding, CellSize / 2 - CherrySize, CellSize / 2,
+                        Sint16 ys2[] = {CellPadding, CellSize / 2 - CherrySize, CellSize / 2,
                                         y2 - CherrySize};
                         bezierColor(rndr, xs2, ys2, 4, 2, BranchColor);
 
@@ -461,7 +525,7 @@ void DrawMap(const Map *map, SDL_Renderer *rndr)
 
 void DrawPacmanChar(double x, double y, Sint16 start, Sint16 end, SDL_Renderer *rndr)
 {
-    filledPieColor(rndr, RCoordinate(x) + CellSize / 2, RCoordinate(y) + CellSize / 2, CellSize / 2 - DefPadding,
+    filledPieColor(rndr, RCoordinate(x) + CellSize / 2, RCoordinate(y) + CellSize / 2, CellSize / 2 - CellPadding,
                    start, end,
                    PacmanColor);
 }
@@ -523,11 +587,17 @@ void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr)
         color = GhostsColors[ghost->type];
 
     if (ghost->x < 0 || ghost->y < 0 || ghost->x > map->width - 1 || ghost->y > map->height - 1)
-        DrawGhostChar2(rndr, ghost->dir, RCoordinate(GetXInBounds(map->width, ghost->x)) + DefPadding,
-                       RCoordinate(GetYInBounds(map->height, ghost->y)) + DefPadding, CellSize - 2 * DefPadding,
+        DrawGhostChar2(rndr, ghost->dir, RCoordinate(GetXInBounds(map->width, ghost->x)) + CellPadding,
+                       RCoordinate(GetYInBounds(map->height, ghost->y)) + CellPadding, CellSize - 2 * CellPadding,
                        color);
-    DrawGhostChar2(rndr, ghost->dir, RCoordinate(ghost->x) + DefPadding, RCoordinate(ghost->y) + DefPadding,
-                   CellSize - 2 * DefPadding, color);
+    DrawGhostChar2(rndr, ghost->dir, RCoordinate(ghost->x) + CellPadding, RCoordinate(ghost->y) + CellPadding,
+                   CellSize - 2 * CellPadding, color);
+}
+
+SDL_Texture *DrawTextColorBlended(SDL_Renderer *rndr, TTF_Font *font, char *text, unsigned int color)
+{
+    SDL_Surface *sText = TTF_RenderText_Blended(font, text, ToSDLColor(color));
+    return SDL_CreateTextureFromSurface(rndr, sText);
 }
 
 SDL_Texture *DrawTextColor(SDL_Renderer *rndr, TTF_Font *font, char *text, unsigned int color)
@@ -549,7 +619,14 @@ SDL_Texture *DrawScore(SDL_Renderer *rndr, TTF_Font *font, int score)
     return DrawText(rndr, font, strScore);
 }
 
-void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, Menu *mnu, int w, int h)
+SDL_Texture *DrawTimer(SDL_Renderer *rndr, TTF_Font *font, unsigned int seconds)
+{
+    char strTime[20];
+    sprintf(strTime, "Time: %4u", seconds);
+    return DrawText(rndr, font, strTime);
+}
+
+void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, TTF_Font *fontBig, Menu *mnu, int w, int h)
 {
     int counter = 0, i;
     for (i = 0; i < mnu->itemCount; i++)
@@ -557,31 +634,57 @@ void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, Menu *mnu, int w, int h)
 
     SDL_Texture *t = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, MenuItemWidth,
                                        (counter) * (MenuItemHeight + MenuItemPadding) + MenuItemHeight +
-                                       5 * MenuItemPadding);
+                                       (strcmp(mnu->subtitle, "") != 0 ? MenuItemHeight : 0) + 2 * MenuItemPadding +
+                                       (mnu->showHighScore ? MenuItemHeight : 0));
     SDL_Texture *tPre = SDL_GetRenderTarget(rndr);
     SDL_SetRenderTarget(rndr, t);
 
-    SDL_Texture *tTitle = DrawTextColor(rndr, font, mnu->title, PacmanColor);
+    int baseY = 0;
+
     SDL_Rect dst = {0, 0, 0, 0};
-    SDL_QueryTexture(tTitle, NULL, NULL, &dst.w, &dst.h);
-    dst.x = (MenuItemWidth - dst.w) / 2;
-    SDL_RenderCopy(rndr, tTitle, NULL, &dst);
-    SDL_DestroyTexture(tTitle);
+    {
+        SDL_Texture *tTitle = DrawTextColorBlended(rndr, fontBig, mnu->title, PacmanColor);
+        SDL_QueryTexture(tTitle, NULL, NULL, &dst.w, &dst.h);
+        dst.x = (MenuItemWidth - dst.w) / 2;
+        SDL_RenderCopy(rndr, tTitle, NULL, &dst);
+        SDL_DestroyTexture(tTitle);
+        baseY += MenuTitleHeight;
+    }
+    if (strcmp(mnu->subtitle, "") != 0)
+    {
+        SDL_Texture *tSubtitle = DrawTextColorBlended(rndr, font, mnu->subtitle, PacmanColor);
+        SDL_QueryTexture(tSubtitle, NULL, NULL, &dst.w, &dst.h);
+        dst.x = (MenuItemWidth - dst.w) / 2;
+        dst.y = baseY;
+        SDL_RenderCopy(rndr, tSubtitle, NULL, &dst);
+        SDL_DestroyTexture(tSubtitle);
+        baseY += MenuItemHeight;
+    }
+    if (mnu->showHighScore)
+    {
+        SDL_Texture *tHighScore = DrawTextColorBlended(rndr, font, mnu->highScore, PacmanColor);
+        SDL_QueryTexture(tHighScore, NULL, NULL, &dst.w, &dst.h);
+        dst.x = (MenuItemWidth - dst.w) / 2;
+        dst.y = baseY;
+        SDL_RenderCopy(rndr, tHighScore, NULL, &dst);
+        SDL_DestroyTexture(tHighScore);
+        baseY += MenuItemHeight;
+    }
+    baseY += 2 * MenuItemPadding;
 
     for (i = 0, counter = 0; i < mnu->itemCount; i++)
     {
         if (!mnu->shownItems[i])
             continue;
-        SDL_Texture *tItem = DrawTextColor(rndr, font, mnu->items[i], mnu->hoverItem == i ? BlinkyColor : 0xFFFFFFFF);
-        dst.y = (counter) * (MenuItemHeight + MenuItemPadding) + MenuItemHeight + 5 * MenuItemPadding;
+        SDL_Texture *tItem = DrawTextColorBlended(rndr, font, mnu->items[i], mnu->hoverItem == i ? BlinkyColor : 0xFFFFFFFF);
+        dst.y = baseY;
         SDL_QueryTexture(tItem, NULL, NULL, &dst.w, &dst.h);
         dst.x = (MenuItemWidth - dst.w) / 2;
-//        if (mnu->hoverItem == i)
-//            boxColor(rndr, 0, dst.y, MenuItemWidth, dst.y + MenuItemHeight, ClydeColor);
         dst.y += (MenuItemHeight - dst.h) / 2;
         SDL_RenderCopy(rndr, tItem, NULL, &dst);
         SDL_DestroyTexture(tItem);
         counter++;
+        baseY += MenuItemHeight + MenuItemPadding;
     }
 
     SDL_SetRenderTarget(rndr, tPre);

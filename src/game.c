@@ -19,8 +19,16 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
     outGame->pineapples = 0;
     outGame->ghosts = MAX_GHOST_COUNT;
     outGame->score = 0;
+    outGame->timeSeconds = 0;
 
-    FILE *fs = fopen(filename, "r");
+    FILE *fs;
+    if (fs = fopen("res\\highscore.txt", "r"))
+    {
+        fscanf(fs, "%d", &outGame->highScore);
+        fclose(fs);
+    } else
+        outGame->highScore = 0;
+    fs = fopen(filename, "r");
     int n, m;
     fscanf(fs, "%d%d", &outMap->height, &outMap->width);
     int blocksCount = 0;
@@ -128,7 +136,7 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost, Game *outGame)
         outGhost->x = outGhost->startX;
         outGhost->y = outGhost->startY;
         outGhost->dir = DIR_NONE;
-        outGame->score+= GHOST_SCORE;
+        outGame->score += GHOST_SCORE;
     } else
     {
         outPacman->x = outPacman->startX;
@@ -138,18 +146,26 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost, Game *outGame)
     }
 }
 
-bool isGameFinished(Game *game, Pacman *pacman)
+int isGameFinished(Game *game, Pacman *pacman)
 {
-    if (pacman->health <= 0) fprintf(stderr, "Pacman dead!\n");
-    if (game->pineapples == 0 && game->cheeses == 0) fprintf(stderr, "Everything is eaten!\n");
-    return (game->pineapples == 0 && game->cheeses == 0) || pacman->health == 0;
+    if (pacman->health <= 0)
+    {
+        fprintf(stdout, "Pacman dead!\n");
+        return 1;
+    }
+    if (game->pineapples == 0 && game->cheeses == 0)
+    {
+        fprintf(stderr, "Everything is eaten!\n");
+        return 2;
+    }
+    return 0;
 }
 
 void checkGhostState(Ghost *ghost)
 {
     if (ghost->blueCounterDown == 0)
         ghost->blue = false;
-    else if(ghost->blue)
+    else if (ghost->blue)
         ghost->blueCounterDown -= 1;
 
     if (ghost->stateCounterDown == 0)
