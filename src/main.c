@@ -250,6 +250,7 @@ int main(int argc, char *argv[])
             paused = true;
             updateMenu = true;
             mnuMain.shownItems[0] = false;
+            mnuMain.hoverItem =  1;
         }
         if (paused)
         {
