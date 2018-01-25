@@ -21,6 +21,7 @@ typedef enum { BLINKY, PINKY, CLYDE, INKY } GhostType;
 #define CHEESE_SCORE 10
 #define CHERRY_SCORE 100
 #define PINEAPPLE_SCORE 20
+#define GHOST_SCORE 50
 
 typedef struct {
     int score;
@@ -67,7 +68,7 @@ void initiateGame(char *filename, Map *outMap, Game *outGame, Pacman *outPacman,
 void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts);
 
 // TO WRITE
-void checkGhostCollision(Pacman *outPacman, Ghost *outGhost);
+void checkGhostCollision(Pacman *outPacman, Ghost *outGhost, Game *outGame);
 
 // TO WRITE
 bool isGameFinished(Game *game, Pacman *pacman);
@@ -80,8 +81,6 @@ Point DirToPt(Direction dir);
 Direction PtToDir(Point pt);
 
 void GetPacmanCCell(Pacman *, int *, int *);
-
-RectD GetPacmanRect(Pacman *);
 
 void PrintPacman(Pacman *);
 

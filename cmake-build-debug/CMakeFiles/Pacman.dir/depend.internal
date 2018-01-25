@@ -56,6 +56,13 @@ CMakeFiles/Pacman.dir/src/Rect.c.o
  ../src/Basics.h
  /cygdrive/e/Programming/C/Pacman2/src/Rect.c
 CMakeFiles/Pacman.dir/src/SDLHelper.c.o
+ ../sdl/sdl2-include/SDL_config.h
+ ../sdl/sdl2-include/SDL_endian.h
+ ../sdl/sdl2-include/SDL_pixels.h
+ ../sdl/sdl2-include/SDL_platform.h
+ ../sdl/sdl2-include/SDL_stdinc.h
+ ../sdl/sdl2-include/begin_code.h
+ ../sdl/sdl2-include/close_code.h
  ../src/SDLHelper.h
  /cygdrive/e/Programming/C/Pacman2/src/SDLHelper.c
 CMakeFiles/Pacman.dir/src/Values.c.o

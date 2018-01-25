@@ -607,6 +607,8 @@ SDL2_gfxPrimitives.h
 ../src/SDL2_gfxPrimitives.h
 
 ../src/SDLHelper.h
+SDL_pixels.h
+-
 
 ../src/input.h
 
@@ -630,6 +632,10 @@ Basics.h
 
 /cygdrive/e/Programming/C/Pacman2/src/SDLHelper.c
 SDLHelper.h
+-
+SDL_pixels.h
+-
+stdio.h
 -
 
 /cygdrive/e/Programming/C/Pacman2/src/Values.c

@@ -107,7 +107,7 @@ void checkEatables(Map *map, Game *outGame, Pacman *outPacman, Ghost *outGhosts)
         map->cells[x][y] = CELL_EMPTY;
 }
 
-void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
+void checkGhostCollision(Pacman *outPacman, Ghost *outGhost, Game *outGame)
 {
     RectD pm, gh;
     pm.left = outPacman->x;
@@ -128,6 +128,7 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
         outGhost->x = outGhost->startX;
         outGhost->y = outGhost->startY;
         outGhost->dir = DIR_NONE;
+        outGame->score+= GHOST_SCORE;
     } else
     {
         outPacman->x = outPacman->startX;
@@ -139,7 +140,7 @@ void checkGhostCollision(Pacman *outPacman, Ghost *outGhost)
 
 bool isGameFinished(Game *game, Pacman *pacman)
 {
-    if (pacman->health == 0) fprintf(stderr, "Pacman dead!\n");
+    if (pacman->health <= 0) fprintf(stderr, "Pacman dead!\n");
     if (game->pineapples == 0 && game->cheeses == 0) fprintf(stderr, "Everything is eaten!\n");
     return (game->pineapples == 0 && game->cheeses == 0) || pacman->health == 0;
 }

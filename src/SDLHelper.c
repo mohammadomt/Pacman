@@ -3,6 +3,8 @@
 //
 
 #include <SDLHelper.h>
+#include <SDL_pixels.h>
+#include <stdio.h>
 
 unsigned int ToAbgr(unsigned int argb)
 {
@@ -14,4 +16,15 @@ unsigned int ToAbgr(unsigned int argb)
     r >>= 16;
     b <<= 16;
     return a + b + g + r;
+}
+
+SDL_Color ToSDLColor(unsigned int abgr)
+{
+    unsigned int a, r, g, b;
+    a = (abgr & 0xFF000000)>>24;
+    r = abgr & 0x000000FF;
+    g = (abgr & 0x0000FF00)>>8;
+    b = (abgr & 0x00FF0000)>>16;
+
+    return (SDL_Color){r,g,b,a};
 }

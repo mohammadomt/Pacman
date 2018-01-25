@@ -55,6 +55,13 @@ CMakeFiles/Pacman.dir/src/Point.c.o: ../src/Point.c
 CMakeFiles/Pacman.dir/src/Rect.c.o: ../src/Basics.h
 CMakeFiles/Pacman.dir/src/Rect.c.o: ../src/Rect.c
 
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/SDL_config.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/SDL_endian.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/SDL_pixels.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/SDL_platform.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/SDL_stdinc.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/begin_code.h
+CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../sdl/sdl2-include/close_code.h
 CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../src/SDLHelper.h
 CMakeFiles/Pacman.dir/src/SDLHelper.c.o: ../src/SDLHelper.c
 

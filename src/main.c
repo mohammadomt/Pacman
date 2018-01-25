@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     Pacman player;
     Ghost ghosts[MAX_GHOST_COUNT];
 
-    initiateGame("res\\map.txt", &map, &game, &player, ghosts);
+    initiateGame("res\\simple.txt", &map, &game, &player, ghosts);
 
     double pacmanStep = 1.0f / CYCLES_PER_SEC * player.speed;
     //TODO: change it for every ghosts
@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
 
     SDL_Event e;
     bool quit = false, paused = true;
+    bool updateMenu = true;
     Action arrow = 0;
     Direction lPacmanDir = DIR_NONE; //Shows correct dir for pacman in stops against blocks
     int lastScore = game.score; //Check it if we should update score texture.
@@ -160,6 +161,7 @@ int main(int argc, char *argv[])
                             while (!mnuMain.shownItems[mnuMain.hoverItem = (mnuMain.hoverItem == 0 ? mnuMain.itemCount -
                                                                                                      1 :
                                                                             mnuMain.hoverItem - 1)]);
+                            updateMenu = true;
                         } else
                             arrow = ACTION_UP;
                         break;
@@ -168,6 +170,7 @@ int main(int argc, char *argv[])
                         {
                             while (!mnuMain.shownItems[mnuMain.hoverItem = ((mnuMain.hoverItem + 1) %
                                                                             mnuMain.itemCount)]);
+                            updateMenu = true;
                         } else
                             arrow = ACTION_DOWN;
                         break;
@@ -179,6 +182,25 @@ int main(int argc, char *argv[])
                             sprintf(mnuMain.title, "Score: %4d", game.score);
                             mnuMain.shownItems[0] = true;
                             mnuMain.hoverItem = 0;
+                            updateMenu = true;
+                        }
+                        break;
+                    case SDLK_KP_ENTER:
+                    case SDLK_RETURN:
+                        if (!paused)
+                            break;
+                        switch (mnuMain.hoverItem)
+                        {
+                            case 0: //Resume
+                                paused = false;
+                                break;
+                            case 1: //New Game
+                                if (mnuMain.shownItems[0]) //Check if game is started
+                                    initiateGame("res\\map.txt", &map, &game, &player, ghosts);
+                                paused = false;
+                                break;
+                            case 2: //Exit
+                                quit = true;
                         }
                         break;
                 }
@@ -186,19 +208,27 @@ int main(int argc, char *argv[])
         }
         ///endregion
 
-        SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
-        SDL_RenderClear(rndr);
-
         if (paused)
         {
-            SDL_SetRenderTarget(rndr, tMenu);
-            SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
-            SDL_RenderClear(rndr);
-            DrawMenu(rndr, fontMenu, &mnuMain, WindowWidth, WindowHeight);
-            SDL_SetRenderTarget(rndr, NULL);
-            SDL_RenderCopy(rndr, tMenu, NULL, NULL);
+            if (updateMenu)
+            {
+                SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+                SDL_RenderClear(rndr);
+
+                SDL_SetRenderTarget(rndr, tMenu);
+                SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+                SDL_RenderClear(rndr);
+                DrawMenu(rndr, fontMenu, &mnuMain, WindowWidth, WindowHeight);
+                SDL_SetRenderTarget(rndr, NULL);
+                SDL_RenderCopy(rndr, tMenu, NULL, NULL);
+
+                updateMenu = false;
+            }
         } else
         {
+            SDL_SetRenderDrawColor(rndr, 0, 0, 0, 255);
+            SDL_RenderClear(rndr);
+
             if (lastScore != game.score)
             {
                 SDL_DestroyTexture(tScore);
@@ -277,7 +307,7 @@ int main(int argc, char *argv[])
                 g->y += ptDir.y * ghostStep;
 
                 checkGhostState(g);
-                checkGhostCollision(&player, g);
+                checkGhostCollision(&player, g, &game);
 
                 DrawGhost(g, &map, rndr);
             }
@@ -500,6 +530,12 @@ void DrawGhost(Ghost *ghost, Map *map, SDL_Renderer *rndr)
                    CellSize - 2 * DefPadding, color);
 }
 
+SDL_Texture *DrawTextColor(SDL_Renderer *rndr, TTF_Font *font, char *text, unsigned int color)
+{
+    SDL_Surface *sText = TTF_RenderText_Solid(font, text, ToSDLColor(color));
+    return SDL_CreateTextureFromSurface(rndr, sText);
+}
+
 SDL_Texture *DrawText(SDL_Renderer *rndr, TTF_Font *font, char *text)
 {
     SDL_Surface *sText = TTF_RenderText_Solid(font, text, (SDL_Color) {255, 255, 255});
@@ -520,11 +556,12 @@ void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, Menu *mnu, int w, int h)
         counter += mnu->shownItems[i];
 
     SDL_Texture *t = SDL_CreateTexture(rndr, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, MenuItemWidth,
-                                       (counter + 1) * (MenuItemHeight + MenuItemPadding));
+                                       (counter) * (MenuItemHeight + MenuItemPadding) + MenuItemHeight +
+                                       5 * MenuItemPadding);
     SDL_Texture *tPre = SDL_GetRenderTarget(rndr);
     SDL_SetRenderTarget(rndr, t);
 
-    SDL_Texture *tTitle = DrawText(rndr, font, mnu->title);
+    SDL_Texture *tTitle = DrawTextColor(rndr, font, mnu->title, PacmanColor);
     SDL_Rect dst = {0, 0, 0, 0};
     SDL_QueryTexture(tTitle, NULL, NULL, &dst.w, &dst.h);
     dst.x = (MenuItemWidth - dst.w) / 2;
@@ -535,12 +572,12 @@ void DrawMenu(SDL_Renderer *rndr, TTF_Font *font, Menu *mnu, int w, int h)
     {
         if (!mnu->shownItems[i])
             continue;
-        SDL_Texture *tItem = DrawText(rndr, font, mnu->items[i]);
-        dst.y = (counter + 1) * (MenuItemHeight + MenuItemPadding);
+        SDL_Texture *tItem = DrawTextColor(rndr, font, mnu->items[i], mnu->hoverItem == i ? BlinkyColor : 0xFFFFFFFF);
+        dst.y = (counter) * (MenuItemHeight + MenuItemPadding) + MenuItemHeight + 5 * MenuItemPadding;
         SDL_QueryTexture(tItem, NULL, NULL, &dst.w, &dst.h);
         dst.x = (MenuItemWidth - dst.w) / 2;
-        if (mnu->hoverItem == i)
-            boxColor(rndr, 0, dst.y, MenuItemWidth, dst.y + MenuItemHeight, ClydeColor);
+//        if (mnu->hoverItem == i)
+//            boxColor(rndr, 0, dst.y, MenuItemWidth, dst.y + MenuItemHeight, ClydeColor);
         dst.y += (MenuItemHeight - dst.h) / 2;
         SDL_RenderCopy(rndr, tItem, NULL, &dst);
         SDL_DestroyTexture(tItem);
